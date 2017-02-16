@@ -4,6 +4,7 @@
 
     <application
         android:allowBackup="true"
+        android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
@@ -19,13 +20,13 @@
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:label="Sign Into Your Account" />
+            android:label="@string/manifest_loginActivityLabel" />
         <activity
             android:name=".RegisterActivity"
-            android:label="Create Your New Account" />
+            android:label="@string/manifest_registerActivityLabel" />
         <activity
             android:name=".HomeActivity"
-            android:label="PKL Mobile"></activity>
+            android:label="@string/manifest_homeActivityLabel" />
     </application>
 
 </manifest>

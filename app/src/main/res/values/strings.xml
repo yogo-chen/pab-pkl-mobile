@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">PKL Mobile</string>
+    <string name="home_loginActivityButtonText">Login Activity</string>
+    <string name="home_registerActivityButtonText">Register Activity</string>
+    <string name="login_emailEditTextHint">Email</string>
+    <string name="login_passwordEditTextHint">Password</string>
+    <string name="login_loginButtonText">Login</string>
+    <string name="login_registerButtonText">Register</string>
+    <string name="register_emailEditTextHint">Email</string>
+    <string name="register_passwordEditTextHint">Password</string>
+    <string name="register_rePasswordEditTextHint">Re-type Password</string>
+    <string name="register_nameEditTextHint">Name</string>
+    <string name="register_addressEditTextHint">Address</string>
+    <string name="register_phoneEditTextHint">Phone</string>
+    <string name="register_birthdayEditTextHint">Birthday</string>
+    <string name="register_featuredProductEditTextHint">Featured Product</string>
+    <string name="register_registerButtonText">Register</string>
+    <string name="manifest_homeActivityLabel">PKL Mobile</string>
+    <string name="manifest_registerActivityLabel">Create Your New Account</string>
+    <string name="manifest_loginActivityLabel">Sign Into Your Account</string>
 </resources>
