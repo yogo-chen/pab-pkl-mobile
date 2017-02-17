@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class RegisterActivity extends AppCompatActivity {
     private EditText nameEditText;
@@ -31,7 +32,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     private Calendar birthdayCalendar;
     private DatePickerDialog birthdayDatePickerDialog;
-    private DatePickerDialog.OnDateSetListener birthdayOnDateSetListener;
 
     private boolean nameFieldAcceptable;
     private boolean birthdayFieldAcceptable;
@@ -71,31 +71,36 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                checkNameField();
             }
 
             @Override
             public void afterTextChanged(Editable s) {
+                if (nameTextInputLayout.isErrorEnabled()) {
+                    nameTextInputLayout.setErrorEnabled(false);
+                    nameTextInputLayout.setError(null);
+                }
             }
         });
 
         this.birthdayCalendar = Calendar.getInstance();
-        this.birthdayOnDateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                birthdayCalendar.set(Calendar.YEAR, year);
-                birthdayCalendar.set(Calendar.MONTH, monthOfYear);
-                birthdayCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
-//                SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d, y");
-                SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMYYYY");
-                birthdayEditText.setText(dateFormat.format(birthdayCalendar.getTime()));
-                checkBirthdayField();
-            }
-        };
         this.birthdayDatePickerDialog = new DatePickerDialog(
                 RegisterActivity.this,
-                birthdayOnDateSetListener,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        birthdayCalendar.set(Calendar.YEAR, year);
+                        birthdayCalendar.set(Calendar.MONTH, monthOfYear);
+                        birthdayCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM dd, yyyy", Locale.ENGLISH);
+                        birthdayEditText.setText(dateFormat.format(birthdayCalendar.getTime()));
+
+                        if (birthdayTextInputLayout.isErrorEnabled()) {
+                            birthdayTextInputLayout.setErrorEnabled(false);
+                            birthdayTextInputLayout.setError(null);
+                        }
+                    }
+                },
                 birthdayCalendar.get(Calendar.YEAR),
                 birthdayCalendar.get(Calendar.MONTH),
                 birthdayCalendar.get(Calendar.DAY_OF_MONTH)
@@ -129,11 +134,14 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                checkAddressField();
             }
 
             @Override
             public void afterTextChanged(Editable s) {
+                if (addressTextInputLayout.isErrorEnabled()) {
+                    addressTextInputLayout.setErrorEnabled(false);
+                    addressTextInputLayout.setError(null);
+                }
             }
         });
 
@@ -152,11 +160,14 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                checkPhoneField();
             }
 
             @Override
             public void afterTextChanged(Editable s) {
+                if (phoneTextInputLayout.isErrorEnabled()) {
+                    phoneTextInputLayout.setErrorEnabled(false);
+                    phoneTextInputLayout.setError(null);
+                }
             }
         });
 
@@ -175,11 +186,14 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                checkEmailField();
             }
 
             @Override
             public void afterTextChanged(Editable s) {
+                if (emailTextInputLayout.isErrorEnabled()) {
+                    emailTextInputLayout.setErrorEnabled(false);
+                    emailTextInputLayout.setError(null);
+                }
             }
         });
     }
@@ -191,8 +205,6 @@ public class RegisterActivity extends AppCompatActivity {
             this.nameTextInputLayout.setError(getText(R.string.register_nameEditTextErrorBlank));
             this.nameFieldAcceptable = false;
         } else {
-            this.nameTextInputLayout.setErrorEnabled(false);
-            this.nameTextInputLayout.setError(null);
             this.nameFieldAcceptable = true;
         }
     }
@@ -204,8 +216,6 @@ public class RegisterActivity extends AppCompatActivity {
             this.birthdayTextInputLayout.setError(getText(R.string.register_birthdayEditTextBlank));
             this.birthdayFieldAcceptable = false;
         } else {
-            this.birthdayTextInputLayout.setErrorEnabled(false);
-            this.birthdayTextInputLayout.setError(null);
             this.birthdayFieldAcceptable = true;
         }
     }
@@ -217,8 +227,6 @@ public class RegisterActivity extends AppCompatActivity {
             this.addressTextInputLayout.setError(getText(R.string.register_addressEditTextBlank));
             this.addressFieldAcceptable = false;
         } else {
-            this.addressTextInputLayout.setErrorEnabled(false);
-            this.addressTextInputLayout.setError(null);
             this.addressFieldAcceptable = true;
         }
     }
@@ -234,8 +242,6 @@ public class RegisterActivity extends AppCompatActivity {
             this.phoneTextInputLayout.setError(getText(R.string.register_phoneEditTextErrorPattern));
             this.phoneFieldAcceptable = false;
         } else {
-            this.phoneTextInputLayout.setErrorEnabled(false);
-            this.phoneTextInputLayout.setError(null);
             this.phoneFieldAcceptable = true;
         }
     }
@@ -251,8 +257,6 @@ public class RegisterActivity extends AppCompatActivity {
             this.emailTextInputLayout.setError(getText(R.string.register_emailEditTextErrorPattern));
             this.emailFieldAcceptable = false;
         } else {
-            this.emailTextInputLayout.setErrorEnabled(false);
-            this.emailTextInputLayout.setError(null);
             this.emailFieldAcceptable = true;
         }
     }
@@ -283,7 +287,12 @@ public class RegisterActivity extends AppCompatActivity {
         return this.phoneEditText.getText().toString().trim();
     }
 
-    public void register(View view) {
+    public void registerButtonOnClick(View view) {
+        checkNameField();
+        checkBirthdayField();
+        checkAddressField();
+        checkPhoneField();
+        checkEmailField();
         if (this.nameFieldAcceptable
                 && this.birthdayFieldAcceptable
                 && this.addressFieldAcceptable
