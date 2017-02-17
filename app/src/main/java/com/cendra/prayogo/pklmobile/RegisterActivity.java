@@ -7,6 +7,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -283,12 +284,15 @@ public class RegisterActivity extends AppCompatActivity {
             this.phoneTextInputLayout.setErrorEnabled(true);
             this.phoneTextInputLayout.setError(getText(R.string.register_phoneEditTextErrorBlank));
             this.phoneFieldAcceptable = false;
+        } else if (!Patterns.PHONE.matcher(s).matches()) {
+            this.phoneTextInputLayout.setErrorEnabled(true);
+            this.phoneTextInputLayout.setError(getText(R.string.register_phoneEditTextErrorPattern));
+            this.phoneFieldAcceptable = false;
         } else {
             this.phoneTextInputLayout.setErrorEnabled(false);
             this.phoneTextInputLayout.setError(null);
             this.phoneFieldAcceptable = true;
         }
-        // TODO check phone number format
     }
 
     private void checkEmailField() {
@@ -297,12 +301,15 @@ public class RegisterActivity extends AppCompatActivity {
             this.emailTextInputLayout.setErrorEnabled(true);
             this.emailTextInputLayout.setError(getText(R.string.register_emailEditTextErrorBlank));
             this.emailFieldAcceptable = false;
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(s).matches()) {
+            this.emailTextInputLayout.setErrorEnabled(true);
+            this.emailTextInputLayout.setError(getText(R.string.register_emailEditTextErrorBlank));
+            this.emailFieldAcceptable = false;
         } else {
             this.emailTextInputLayout.setErrorEnabled(false);
             this.emailTextInputLayout.setError(null);
             this.emailFieldAcceptable = true;
         }
-        // TODO check email address format
     }
 
     private void checkPasswordField() {
