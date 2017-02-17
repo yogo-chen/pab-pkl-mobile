@@ -248,7 +248,7 @@ public class RegisterActivity extends AppCompatActivity {
             this.emailFieldAcceptable = false;
         } else if (!Patterns.EMAIL_ADDRESS.matcher(s).matches()) {
             this.emailTextInputLayout.setErrorEnabled(true);
-            this.emailTextInputLayout.setError(getText(R.string.register_emailEditTextErrorBlank));
+            this.emailTextInputLayout.setError(getText(R.string.register_emailEditTextErrorPattern));
             this.emailFieldAcceptable = false;
         } else {
             this.emailTextInputLayout.setErrorEnabled(false);
@@ -260,16 +260,6 @@ public class RegisterActivity extends AppCompatActivity {
     private void showBirthdayDatePickerDialog() {
         if (!this.birthdayDatePickerDialog.isShowing()) {
             this.birthdayDatePickerDialog.show();
-        }
-    }
-
-    public void register(View view) {
-        if (this.nameFieldAcceptable
-                && this.birthdayFieldAcceptable
-                && this.addressFieldAcceptable
-                && this.phoneFieldAcceptable
-                && this.emailFieldAcceptable) {
-            Toast.makeText(RegisterActivity.this, "Registered", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -291,5 +281,15 @@ public class RegisterActivity extends AppCompatActivity {
 
     private String getPhoneField() {
         return this.phoneEditText.getText().toString().trim();
+    }
+
+    public void register(View view) {
+        if (this.nameFieldAcceptable
+                && this.birthdayFieldAcceptable
+                && this.addressFieldAcceptable
+                && this.phoneFieldAcceptable
+                && this.emailFieldAcceptable) {
+            Toast.makeText(RegisterActivity.this, "Registered", Toast.LENGTH_SHORT).show();
+        }
     }
 }
