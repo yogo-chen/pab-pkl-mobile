@@ -22,16 +22,12 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText addressEditText;
     private EditText phoneEditText;
     private EditText emailEditText;
-    private EditText passwordEditText;
-    private EditText rePasswordEditText;
 
     private TextInputLayout nameTextInputLayout;
     private TextInputLayout birthdayTextInputLayout;
     private TextInputLayout addressTextInputLayout;
     private TextInputLayout phoneTextInputLayout;
     private TextInputLayout emailTextInputLayout;
-    private TextInputLayout passwordTextInputLayout;
-    private TextInputLayout rePasswordTextInputLayout;
 
     private Calendar birthdayCalendar;
     private DatePickerDialog birthdayDatePickerDialog;
@@ -42,8 +38,6 @@ public class RegisterActivity extends AppCompatActivity {
     private boolean addressFieldAcceptable;
     private boolean phoneFieldAcceptable;
     private boolean emailFieldAcceptable;
-    private boolean passwordFieldAcceptable;
-    private boolean rePasswordFieldAcceptable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,16 +49,12 @@ public class RegisterActivity extends AppCompatActivity {
         this.addressEditText = (EditText) findViewById(R.id.register_addressEditText);
         this.phoneEditText = (EditText) findViewById(R.id.register_phoneEditText);
         this.emailEditText = (EditText) findViewById(R.id.register_emailEditText);
-        this.passwordEditText = (EditText) findViewById(R.id.register_passwordEditText);
-        this.rePasswordEditText = (EditText) findViewById(R.id.register_rePasswordEditText);
 
         this.nameTextInputLayout = (TextInputLayout) findViewById(R.id.register_nameTextInputLayout);
         this.birthdayTextInputLayout = (TextInputLayout) findViewById(R.id.register_birthdayTextInputLayout);
         this.addressTextInputLayout = (TextInputLayout) findViewById(R.id.register_addressTextInputLayout);
         this.phoneTextInputLayout = (TextInputLayout) findViewById(R.id.register_phoneTextInputLayout);
         this.emailTextInputLayout = (TextInputLayout) findViewById(R.id.register_emailTextInputLayout);
-        this.passwordTextInputLayout = (TextInputLayout) findViewById(R.id.register_passwordTextInputLayout);
-        this.rePasswordTextInputLayout = (TextInputLayout) findViewById(R.id.register_rePasswordTextInputLayout);
 
         this.nameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -97,7 +87,8 @@ public class RegisterActivity extends AppCompatActivity {
                 birthdayCalendar.set(Calendar.MONTH, monthOfYear);
                 birthdayCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-                SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d, y");
+//                SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d, y");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMYYYY");
                 birthdayEditText.setText(dateFormat.format(birthdayCalendar.getTime()));
                 checkBirthdayField();
             }
@@ -191,52 +182,6 @@ public class RegisterActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
             }
         });
-
-        this.passwordEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    checkPasswordField();
-                }
-            }
-        });
-        this.passwordEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                checkPasswordField();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-
-        this.rePasswordEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    checkRePasswordField();
-                }
-            }
-        });
-        this.rePasswordEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                checkRePasswordField();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
     }
 
     private void checkNameField() {
@@ -312,36 +257,6 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-    private void checkPasswordField() {
-        String s = getPasswordField();
-        if (s.equals("")) {
-            this.passwordTextInputLayout.setErrorEnabled(true);
-            this.passwordTextInputLayout.setError(getText(R.string.register_passwordEditTextErrorBlank));
-            this.passwordFieldAcceptable = false;
-        } else {
-            this.passwordTextInputLayout.setErrorEnabled(false);
-            this.passwordTextInputLayout.setError(null);
-            this.passwordFieldAcceptable = true;
-        }
-    }
-
-    private void checkRePasswordField() {
-        String s = getRePasswordField();
-        if (s.equals("")) {
-            this.rePasswordTextInputLayout.setErrorEnabled(true);
-            this.rePasswordTextInputLayout.setError(getText(R.string.register_rePasswordEditTextErrorBlank));
-            this.rePasswordFieldAcceptable = false;
-        } else if (!s.equals(getPasswordField())) {
-            this.rePasswordTextInputLayout.setErrorEnabled(true);
-            this.rePasswordTextInputLayout.setError(getText(R.string.register_rePasswordEditTextErrorNotMatch));
-            this.rePasswordFieldAcceptable = false;
-        } else {
-            this.rePasswordTextInputLayout.setErrorEnabled(false);
-            this.rePasswordTextInputLayout.setError(null);
-            this.rePasswordFieldAcceptable = true;
-        }
-    }
-
     private void showBirthdayDatePickerDialog() {
         if (!this.birthdayDatePickerDialog.isShowing()) {
             this.birthdayDatePickerDialog.show();
@@ -353,9 +268,7 @@ public class RegisterActivity extends AppCompatActivity {
                 && this.birthdayFieldAcceptable
                 && this.addressFieldAcceptable
                 && this.phoneFieldAcceptable
-                && this.emailFieldAcceptable
-                && this.passwordFieldAcceptable
-                && this.rePasswordFieldAcceptable) {
+                && this.emailFieldAcceptable) {
             Toast.makeText(RegisterActivity.this, "Registered", Toast.LENGTH_SHORT).show();
         }
     }
@@ -366,14 +279,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     private String getBirthdayField() {
         return this.birthdayEditText.getText().toString().trim();
-    }
-
-    private String getPasswordField() {
-        return this.passwordEditText.getText().toString().trim();
-    }
-
-    private String getRePasswordField() {
-        return this.rePasswordEditText.getText().toString().trim();
     }
 
     private String getNameField() {
@@ -387,6 +292,4 @@ public class RegisterActivity extends AppCompatActivity {
     private String getPhoneField() {
         return this.phoneEditText.getText().toString().trim();
     }
-
-
 }
