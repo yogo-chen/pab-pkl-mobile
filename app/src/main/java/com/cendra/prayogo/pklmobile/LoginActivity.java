@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText emailEditText;
@@ -26,7 +27,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private Calendar birthdayCalendar;
     private DatePickerDialog birthdayDatePickerDialog;
-    private DatePickerDialog.OnDateSetListener birthdayOnDateSetListener;
 
     private boolean emailFieldAcceptable;
     private boolean birthdayFieldAcceptable;
@@ -57,30 +57,36 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                checkEmailField();
             }
 
             @Override
             public void afterTextChanged(Editable s) {
+                if (emailTextInputLayout.isErrorEnabled()) {
+                    emailTextInputLayout.setErrorEnabled(false);
+                    emailTextInputLayout.setError(null);
+                }
             }
         });
 
         this.birthdayCalendar = Calendar.getInstance();
-        this.birthdayOnDateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                birthdayCalendar.set(Calendar.YEAR, year);
-                birthdayCalendar.set(Calendar.MONTH, monthOfYear);
-                birthdayCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
-                SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMYYYY");
-                birthdayEditText.setText(dateFormat.format(birthdayCalendar.getTime()));
-                checkBirthdayField();
-            }
-        };
         this.birthdayDatePickerDialog = new DatePickerDialog(
                 LoginActivity.this,
-                birthdayOnDateSetListener,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        birthdayCalendar.set(Calendar.YEAR, year);
+                        birthdayCalendar.set(Calendar.MONTH, monthOfYear);
+                        birthdayCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM dd, yyyy", Locale.ENGLISH);
+                        birthdayEditText.setText(dateFormat.format(birthdayCalendar.getTime()));
+
+                        if (birthdayTextInputLayout.isErrorEnabled()) {
+                            birthdayTextInputLayout.setErrorEnabled(false);
+                            birthdayTextInputLayout.setError(null);
+                        }
+                    }
+                },
                 birthdayCalendar.get(Calendar.YEAR),
                 birthdayCalendar.get(Calendar.MONTH),
                 birthdayCalendar.get(Calendar.DAY_OF_MONTH)
@@ -111,8 +117,6 @@ public class LoginActivity extends AppCompatActivity {
             this.emailTextInputLayout.setError(getText(R.string.login_emailEditTextErrorPattern));
             this.emailFieldAcceptable = false;
         } else {
-            this.emailTextInputLayout.setErrorEnabled(false);
-            this.emailTextInputLayout.setError(null);
             this.emailFieldAcceptable = true;
         }
     }
@@ -124,8 +128,6 @@ public class LoginActivity extends AppCompatActivity {
             this.birthdayTextInputLayout.setError(getText(R.string.login_birthdayEditTextBlank));
             this.birthdayFieldAcceptable = false;
         } else {
-            this.birthdayTextInputLayout.setErrorEnabled(false);
-            this.birthdayTextInputLayout.setError(null);
             this.birthdayFieldAcceptable = true;
         }
     }
@@ -144,15 +146,16 @@ public class LoginActivity extends AppCompatActivity {
         return this.birthdayEditText.getText().toString().trim();
     }
 
-    public void startRegisterActivity(View view) {
-        Intent intent = new Intent(this, RegisterActivity.class);
-        startActivity(intent);
-    }
-
-    public void login(View view) {
-        if (this.emailFieldAcceptable
-                && this.birthdayFieldAcceptable) {
+    public void loginButtonOnClick(View view) {
+        checkEmailField();
+        checkBirthdayField();
+        if (this.emailFieldAcceptable && this.birthdayFieldAcceptable) {
             Toast.makeText(LoginActivity.this, "Logged In", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void registerButtonOnClick(View view) {
+        Intent intent = new Intent(this, RegisterActivity.class);
+        startActivity(intent);
     }
 }

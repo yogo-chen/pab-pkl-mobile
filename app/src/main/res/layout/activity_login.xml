@@ -47,14 +47,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/login_loginButtonText"
-            android:onClick="login"/>
+            android:onClick="loginButtonOnClick"
+            android:text="@string/login_loginButtonText" />
 
         <Button
             android:id="@+id/login_registerButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="startRegisterActivity"
+            android:onClick="registerButtonOnClick"
             android:text="@string/login_registerButtonText" />
     </LinearLayout>
 </ScrollView>
