@@ -30,7 +30,6 @@ public class PklDbHelper extends SQLiteOpenHelper {
                     COLUMN_NAME_ADDRESS + " TEXT," +
                     COLUMN_NAME_PHONE + " TEXT," +
                     COLUMN_NAME_BIRTHDAY + " TEXT)";
-
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + TABLE_NAME;
 
