@@ -7,7 +7,6 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.DatePicker;
@@ -289,11 +288,11 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private String getEmailField() {
-        return this.emailEditText.getText().toString().trim();
+        return this.emailEditText.getText().toString().trim().toLowerCase();
     }
 
     private String getBirthdayField() {
-        return this.birthdayEditText.getText().toString().trim().toLowerCase();
+        return this.birthdayEditText.getText().toString().trim();
     }
 
     private String getNameField() {
@@ -318,8 +317,7 @@ public class RegisterActivity extends AppCompatActivity {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH);
             String simpleBirthdayDate = dateFormat.format(this.birthdayCalendar.getTime());
             this.pklDbHelper.insertPkl(getEmailField(), getNameField(), getAddressField(), getPhoneField(), simpleBirthdayDate);
-            Log.d("RegisterActivity", "Register Success [" + this.pklDbHelper.getPkl(getEmailField()).toString() + "]");
-            Toast.makeText(RegisterActivity.this, "Your Account Created", Toast.LENGTH_LONG).show();
+            Toast.makeText(RegisterActivity.this, "Your Account Created", Toast.LENGTH_SHORT).show();
         }
     }
 }
