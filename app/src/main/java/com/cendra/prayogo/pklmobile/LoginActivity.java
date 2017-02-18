@@ -1,6 +1,7 @@
 package com.cendra.prayogo.pklmobile;
 
 import android.app.DatePickerDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +14,8 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.cendra.prayogo.pklmobile.db.PklDbHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -31,6 +34,8 @@ public class LoginActivity extends AppCompatActivity {
     private boolean emailFieldAcceptable;
     private boolean birthdayFieldAcceptable;
 
+    private PklDbHelper pklDbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +46,8 @@ public class LoginActivity extends AppCompatActivity {
 
         this.emailTextInputLayout = (TextInputLayout) findViewById(R.id.login_emailTextInputLayout);
         this.birthdayTextInputLayout = (TextInputLayout) findViewById(R.id.login_birthdayTextInputLayout);
+
+        this.pklDbHelper = new PklDbHelper(LoginActivity.this);
 
         this.emailEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -132,6 +139,11 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    private void checkAllField() {
+        checkEmailField();
+        checkBirthdayField();
+    }
+
     private void showBirthdayDatePickerDialog() {
         if (!this.birthdayDatePickerDialog.isShowing()) {
             this.birthdayDatePickerDialog.show();
@@ -139,7 +151,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private String getEmailField() {
-        return this.emailEditText.getText().toString().trim();
+        return this.emailEditText.getText().toString().trim().toLowerCase();
     }
 
     private String getBirthdayField() {
@@ -147,10 +159,16 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void loginButtonOnClick(View view) {
-        checkEmailField();
-        checkBirthdayField();
+        checkAllField();
         if (this.emailFieldAcceptable && this.birthdayFieldAcceptable) {
-            Toast.makeText(LoginActivity.this, "Logged In", Toast.LENGTH_SHORT).show();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH);
+            String simpleBirthdayDate = dateFormat.format(this.birthdayCalendar.getTime());
+            ContentValues pkl = this.pklDbHelper.getPkl(getEmailField(), simpleBirthdayDate);
+            if (pkl != null) {
+                Toast.makeText(LoginActivity.this, "Logged In Successfully", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(LoginActivity.this, "Invalid Email or Birthday", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

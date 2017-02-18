@@ -18,10 +18,10 @@
     <string name="register_phoneEditTextHint">Phone</string>
     <string name="register_phoneEditTextErrorBlank">Please fill in your phone number</string>
     <string name="register_phoneEditTextErrorPattern">Please check your phone number format</string>
-    <string name="register_emailEditTextErrorTaken">This email is already taken</string>
     <string name="register_emailEditTextHint">Email</string>
     <string name="register_emailEditTextErrorBlank">Please fill in your email address</string>
     <string name="register_emailEditTextErrorPattern">Please check your email address format</string>
+    <string name="register_emailEditTextErrorTaken">This email is already taken</string>
     <string name="register_registerButtonText">Register</string>
     <string name="manifest_homeActivityLabel">PKL Mobile</string>
     <string name="manifest_registerActivityLabel">Create Your New Account</string>
