@@ -30,8 +30,8 @@ public class TransactionDbHelper extends SQLiteOpenHelper {
                     COLUMN_NAME_PRODUCT_ID + " INTEGER," +
                     COLUMN_NAME_SOLD_PRICE + " INTEGER," +
                     COLUMN_NAME_QUANTITY + " INTEGER," +
-                    COLUMN_NAME_DATE + " STRING," +
-                    COLUMN_NAME_PKL_EMAIL + " STRING," +
+                    COLUMN_NAME_DATE + " TEXT," +
+                    COLUMN_NAME_PKL_EMAIL + " TEXT," +
                     "FOREIGN KEY(" + COLUMN_NAME_PRODUCT_ID +
                     ") REFERENCES " + ProductDbHelper.TABLE_NAME +
                     "(" + ProductDbHelper.COLUMN_NAME_ID + ")" +
@@ -56,7 +56,7 @@ public class TransactionDbHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void insertTransaction(@NonNull int productId, @NonNull int soldPrice, @NonNull int quantity, @NonNull String date, @NonNull String pklEmail) {
+    public void insertTransaction(int productId, int soldPrice, int quantity, @NonNull String date, @NonNull String pklEmail) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_NAME_PRODUCT_ID, productId);
@@ -104,7 +104,7 @@ public class TransactionDbHelper extends SQLiteOpenHelper {
         return rows;
     }
 
-    public void updateTransaction(@NonNull int _id, @NonNull int productId, @NonNull int soldPrice, @NonNull int quantity, @NonNull String date) {
+    public void updateTransaction(int _id, int productId, int soldPrice, int quantity, @NonNull String date) {
         SQLiteDatabase db = getReadableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_NAME_PRODUCT_ID, productId);

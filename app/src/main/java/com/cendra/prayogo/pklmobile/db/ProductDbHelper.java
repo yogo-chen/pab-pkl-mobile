@@ -29,7 +29,7 @@ public class ProductDbHelper extends SQLiteOpenHelper {
                     COLUMN_NAME_NAME + " TEXT," +
                     COLUMN_NAME_BASE_PRICE + " INTEGER," +
                     COLUMN_NAME_SELL_PRICE + " INTEGER," +
-                    COLUMN_NAME_PKL_EMAIL + " STRING," +
+                    COLUMN_NAME_PKL_EMAIL + " TEXT," +
                     "FOREIGN KEY(" + COLUMN_NAME_PKL_EMAIL +
                     ") REFERENCES " + PklDbHelper.TABLE_NAME +
                     "(" + PklDbHelper.COLUMN_NAME_EMAIL + "))";
@@ -51,7 +51,7 @@ public class ProductDbHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void insertProduct(@NonNull String name, @NonNull int basePrice, @NonNull int sellPrice, @NonNull String pklEmail) {
+    public void insertProduct(@NonNull String name, int basePrice, int sellPrice, @NonNull String pklEmail) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_NAME_NAME, name);
@@ -96,7 +96,7 @@ public class ProductDbHelper extends SQLiteOpenHelper {
         return rows;
     }
 
-    public void updateProduct(@NonNull int _id, @NonNull String name, @NonNull int basePrice, @NonNull int sellPrice) {
+    public void updateProduct(int _id, @NonNull String name, int basePrice, int sellPrice) {
         SQLiteDatabase db = getReadableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_NAME_NAME, name);
