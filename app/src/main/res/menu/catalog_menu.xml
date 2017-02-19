@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/catalog_menu_add_product"
+        android:icon="@drawable/ic_add_white_24dp"
+        android:title="Add Product"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_aboutAbout"
+        android:title="About"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/catalog_menu_logout"
+        android:title="Log Out"
+        app:showAsAction="never" />
+</menu>

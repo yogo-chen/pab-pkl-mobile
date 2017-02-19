@@ -25,8 +25,11 @@
             android:name=".RegisterActivity"
             android:label="@string/manifest_registerActivityLabel" />
         <activity
-            android:name=".HomeActivity"
-            android:label="@string/manifest_homeActivityLabel" />
+            android:name=".CatalogActivity"
+            android:label="Product Catalog" />
+        <activity
+            android:name=".AddProductActivity"
+            android:label="Add New Product" />
     </application>
 
 </manifest>
