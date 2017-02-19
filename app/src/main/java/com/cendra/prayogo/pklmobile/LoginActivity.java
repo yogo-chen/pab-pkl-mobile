@@ -1,7 +1,6 @@
 package com.cendra.prayogo.pklmobile;
 
 import android.app.DatePickerDialog;
-import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,7 +14,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.cendra.prayogo.pklmobile.db.PklDbHelper;
+import com.cendra.prayogo.pklmobile.service.PklAccountManager;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -34,8 +33,6 @@ public class LoginActivity extends AppCompatActivity {
     private boolean emailFieldAcceptable;
     private boolean birthdayFieldAcceptable;
 
-    private PklDbHelper pklDbHelper;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,8 +43,6 @@ public class LoginActivity extends AppCompatActivity {
 
         this.emailTextInputLayout = (TextInputLayout) findViewById(R.id.login_emailTextInputLayout);
         this.birthdayTextInputLayout = (TextInputLayout) findViewById(R.id.login_birthdayTextInputLayout);
-
-        this.pklDbHelper = new PklDbHelper(LoginActivity.this);
 
         this.emailEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -158,19 +153,29 @@ public class LoginActivity extends AppCompatActivity {
         return this.birthdayEditText.getText().toString().trim();
     }
 
-    public void loginButtonOnClick(View view) {
-        checkAllField();
-        if (this.emailFieldAcceptable && this.birthdayFieldAcceptable) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH);
-            String simpleBirthdayDate = dateFormat.format(this.birthdayCalendar.getTime());
-            ContentValues pkl = this.pklDbHelper.getPkl(getEmailField(), simpleBirthdayDate);
-            if (pkl != null) {
-                Toast.makeText(LoginActivity.this, "Logged In Successfully", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(LoginActivity.this, "Invalid Email or Birthday", Toast.LENGTH_SHORT).show();
-            }
+    private boolean isAllFieldAcceptable() {
+        return this.emailFieldAcceptable && this.birthdayFieldAcceptable;
+    }
+
+    private void doLogin() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH);
+        String simpleBirthdayDate = dateFormat.format(this.birthdayCalendar.getTime());
+
+        boolean canLogin = PklAccountManager.logIn(LoginActivity.this, getEmailField(), simpleBirthdayDate);
+        if (canLogin) {
+            Toast.makeText(LoginActivity.this, "Log In Success", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(LoginActivity.this, "Invalid Email or Birthday", Toast.LENGTH_SHORT).show();
         }
     }
+
+    public void loginButtonOnClick(View view) {
+        checkAllField();
+        if (isAllFieldAcceptable()) {
+            doLogin();
+        }
+    }
+
 
     public void registerButtonOnClick(View view) {
         Intent intent = new Intent(this, RegisterActivity.class);

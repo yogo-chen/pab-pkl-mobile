@@ -13,7 +13,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.cendra.prayogo.pklmobile.db.PklDbHelper;
+import com.cendra.prayogo.pklmobile.service.PklAccountManager;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -41,8 +41,6 @@ public class RegisterActivity extends AppCompatActivity {
     private boolean phoneFieldAcceptable;
     private boolean emailFieldAcceptable;
 
-    private PklDbHelper pklDbHelper;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,8 +57,6 @@ public class RegisterActivity extends AppCompatActivity {
         this.addressTextInputLayout = (TextInputLayout) findViewById(R.id.register_addressTextInputLayout);
         this.phoneTextInputLayout = (TextInputLayout) findViewById(R.id.register_phoneTextInputLayout);
         this.emailTextInputLayout = (TextInputLayout) findViewById(R.id.register_emailTextInputLayout);
-
-        this.pklDbHelper = new PklDbHelper(RegisterActivity.this);
 
         this.nameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -263,13 +259,7 @@ public class RegisterActivity extends AppCompatActivity {
             this.emailTextInputLayout.setError(getText(R.string.register_emailEditTextErrorPattern));
             this.emailFieldAcceptable = false;
         } else {
-            if (this.pklDbHelper.getPkl(s) != null) {
-                this.emailTextInputLayout.setErrorEnabled(true);
-                this.emailTextInputLayout.setError(getText(R.string.register_emailEditTextErrorTaken));
-                this.emailFieldAcceptable = false;
-            } else {
-                this.emailFieldAcceptable = true;
-            }
+            this.emailFieldAcceptable = true;
         }
     }
 
@@ -307,17 +297,32 @@ public class RegisterActivity extends AppCompatActivity {
         return this.phoneEditText.getText().toString().trim();
     }
 
-    public void registerButtonOnClick(View view) {
-        checkAllField();
-        if (this.nameFieldAcceptable
+    private boolean isAllFieldAcceptable() {
+        return this.nameFieldAcceptable
                 && this.birthdayFieldAcceptable
                 && this.addressFieldAcceptable
                 && this.phoneFieldAcceptable
-                && this.emailFieldAcceptable) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH);
-            String simpleBirthdayDate = dateFormat.format(this.birthdayCalendar.getTime());
-            this.pklDbHelper.insertPkl(getEmailField(), getNameField(), getAddressField(), getPhoneField(), simpleBirthdayDate);
-            Toast.makeText(RegisterActivity.this, "Your Account Created", Toast.LENGTH_SHORT).show();
+                && this.emailFieldAcceptable;
+    }
+
+    private void doRegister() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH);
+        String simpleBirthdayDate = dateFormat.format(this.birthdayCalendar.getTime());
+
+        boolean canRegister = PklAccountManager.register(RegisterActivity.this, getEmailField(), getNameField(), getAddressField(), getPhoneField(), simpleBirthdayDate);
+        if (canRegister) {
+            Toast.makeText(RegisterActivity.this, "Account Created Successfully", Toast.LENGTH_SHORT).show();
+        } else {
+            this.emailTextInputLayout.setErrorEnabled(true);
+            this.emailTextInputLayout.setError(getText(R.string.register_emailEditTextErrorTaken));
+            this.emailFieldAcceptable = false;
+        }
+    }
+
+    public void registerButtonOnClick(View view) {
+        checkAllField();
+        if (isAllFieldAcceptable()) {
+            doRegister();
         }
     }
 }
