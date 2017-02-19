@@ -34,7 +34,7 @@ public class TransactionDbHelper extends SQLiteOpenHelper {
                     COLUMN_NAME_PKL_EMAIL + " TEXT," +
                     "FOREIGN KEY(" + COLUMN_NAME_PRODUCT_ID +
                     ") REFERENCES " + ProductDbHelper.TABLE_NAME +
-                    "(" + ProductDbHelper.COLUMN_NAME_ID + ")" +
+                    "(" + ProductDbHelper.COLUMN_NAME_ID + ")," +
                     "FOREIGN KEY(" + COLUMN_NAME_PKL_EMAIL +
                     ") REFERENCES " + PklDbHelper.TABLE_NAME +
                     "(" + PklDbHelper.COLUMN_NAME_EMAIL + "))";
