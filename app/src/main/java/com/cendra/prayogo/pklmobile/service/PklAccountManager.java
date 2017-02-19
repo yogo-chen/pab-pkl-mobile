@@ -22,7 +22,7 @@ public class PklAccountManager {
     private PklAccountManager() {
     }
 
-    public static boolean logIn(Context context, String email, String birthday) {
+    public static boolean login(Context context, String email, String birthday) {
         if (context == null) {
             return false;
         } else if (email == null) {
@@ -49,7 +49,7 @@ public class PklAccountManager {
         }
     }
 
-    public static void logOut(Context context) {
+    public static void logout(Context context) {
         SharedPreferences sharedPreferences = getSharedPreferences(context);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();

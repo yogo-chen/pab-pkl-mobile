@@ -2,6 +2,7 @@ package com.cendra.prayogo.pklmobile;
 
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -44,6 +45,14 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (PklAccountManager.getLoggedIn(RegisterActivity.this) != null) {
+            Intent intent = new Intent(RegisterActivity.this, CatalogActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
         setContentView(R.layout.activity_register);
 
         this.nameEditText = (EditText) findViewById(R.id.register_nameEditText);
@@ -312,6 +321,9 @@ public class RegisterActivity extends AppCompatActivity {
         boolean canRegister = PklAccountManager.register(RegisterActivity.this, getEmailField(), getNameField(), getAddressField(), getPhoneField(), simpleBirthdayDate);
         if (canRegister) {
             Toast.makeText(RegisterActivity.this, "Account Created Successfully", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
         } else {
             this.emailTextInputLayout.setErrorEnabled(true);
             this.emailTextInputLayout.setError(getText(R.string.register_emailEditTextErrorTaken));

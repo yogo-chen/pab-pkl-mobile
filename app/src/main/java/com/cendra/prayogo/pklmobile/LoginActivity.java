@@ -36,6 +36,14 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (PklAccountManager.getLoggedIn(LoginActivity.this) != null) {
+            Intent intent = new Intent(LoginActivity.this, CatalogActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
         setContentView(R.layout.activity_login);
 
         this.emailEditText = (EditText) findViewById(R.id.login_emailEditText);
@@ -161,9 +169,12 @@ public class LoginActivity extends AppCompatActivity {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH);
         String simpleBirthdayDate = dateFormat.format(this.birthdayCalendar.getTime());
 
-        boolean canLogin = PklAccountManager.logIn(LoginActivity.this, getEmailField(), simpleBirthdayDate);
+        boolean canLogin = PklAccountManager.login(LoginActivity.this, getEmailField(), simpleBirthdayDate);
         if (canLogin) {
             Toast.makeText(LoginActivity.this, "Log In Success", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(LoginActivity.this, CatalogActivity.class);
+            startActivity(intent);
+            finish();
         } else {
             Toast.makeText(LoginActivity.this, "Invalid Email or Birthday", Toast.LENGTH_SHORT).show();
         }
@@ -175,7 +186,6 @@ public class LoginActivity extends AppCompatActivity {
             doLogin();
         }
     }
-
 
     public void registerButtonOnClick(View view) {
         Intent intent = new Intent(this, RegisterActivity.class);
