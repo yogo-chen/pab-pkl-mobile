@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.cendra.prayogo.pklmobile.adapter.ProductAdapter;
 import com.cendra.prayogo.pklmobile.db.ProductDbHelper;
@@ -61,6 +62,10 @@ public class CatalogActivity extends AppCompatActivity {
         switch (itemId) {
             case R.id.catalog_menu_add_product: {
                 startAddProductActivity();
+                return true;
+            }
+            case R.id.catalog_menu_about: {
+                Toast.makeText(CatalogActivity.this, "PKL Mobile - Created by Prayogo Cendra", Toast.LENGTH_LONG).show();
                 return true;
             }
             case R.id.catalog_menu_logout: {
