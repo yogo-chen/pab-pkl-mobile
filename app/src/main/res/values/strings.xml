@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">PKL Mobile</string>
-    <string name="home_loginActivityButtonText">Login Activity</string>
-    <string name="home_registerActivityButtonText">Register Activity</string>
     <string name="login_emailEditTextHint">Email</string>
     <string name="login_emailEditTextErrorBlank">Please fill in your email address</string>
     <string name="login_emailEditTextErrorPattern">Please check your email address format</string>
