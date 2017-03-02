@@ -1,7 +1,6 @@
 package com.cendra.prayogo.pklmobile;
 
 import android.app.DatePickerDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
@@ -23,43 +22,19 @@ import java.util.Locale;
 public class LoginActivity extends AppCompatActivity {
     private EditText emailEditText;
     private EditText birthdayEditText;
-
     private TextInputLayout emailTextInputLayout;
     private TextInputLayout birthdayTextInputLayout;
-
-    private Calendar birthdayCalendar;
-    private DatePickerDialog birthdayDatePickerDialog;
-
-    private boolean emailFieldAcceptable;
-    private boolean birthdayFieldAcceptable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (PklAccountManager.getLoggedIn(LoginActivity.this) != null) {
-            Intent intent = new Intent(LoginActivity.this, CatalogActivity.class);
-            startActivity(intent);
-            finish();
-            return;
-        }
-
         setContentView(R.layout.activity_login);
 
-        this.emailEditText = (EditText) findViewById(R.id.login_emailEditText);
-        this.birthdayEditText = (EditText) findViewById(R.id.login_birthdayEditText);
+        this.emailEditText = (EditText) findViewById(R.id.activity_login_emailEditText);
+        this.birthdayEditText = (EditText) findViewById(R.id.activity_login_birthdayEditText);
+        this.emailTextInputLayout = (TextInputLayout) findViewById(R.id.activity_login_emailTextInputLayout);
+        this.birthdayTextInputLayout = (TextInputLayout) findViewById(R.id.activity_login_birthdayTextInputLayout);
 
-        this.emailTextInputLayout = (TextInputLayout) findViewById(R.id.login_emailTextInputLayout);
-        this.birthdayTextInputLayout = (TextInputLayout) findViewById(R.id.login_birthdayTextInputLayout);
-
-        this.emailEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    checkEmailField();
-                }
-            }
-        });
         this.emailEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -78,8 +53,9 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        this.birthdayCalendar = Calendar.getInstance();
-        this.birthdayDatePickerDialog = new DatePickerDialog(
+        final Calendar birthdayCalendar = Calendar.getInstance();
+
+        final DatePickerDialog birthdayDatePickerDialog = new DatePickerDialog(
                 LoginActivity.this,
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
@@ -88,68 +64,56 @@ public class LoginActivity extends AppCompatActivity {
                         birthdayCalendar.set(Calendar.MONTH, monthOfYear);
                         birthdayCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM dd, yyyy", Locale.ENGLISH);
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH);
                         birthdayEditText.setText(dateFormat.format(birthdayCalendar.getTime()));
-
-                        if (birthdayTextInputLayout.isErrorEnabled()) {
-                            birthdayTextInputLayout.setErrorEnabled(false);
-                            birthdayTextInputLayout.setError(null);
-                        }
                     }
                 },
                 birthdayCalendar.get(Calendar.YEAR),
                 birthdayCalendar.get(Calendar.MONTH),
                 birthdayCalendar.get(Calendar.DAY_OF_MONTH)
         );
-        this.birthdayDatePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
-        this.birthdayDatePickerDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                checkBirthdayField();
-            }
-        });
+
+        birthdayDatePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+
         this.birthdayEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showBirthdayDatePickerDialog();
+                if (birthdayTextInputLayout.isErrorEnabled()) {
+                    birthdayTextInputLayout.setErrorEnabled(false);
+                    birthdayTextInputLayout.setError(null);
+                }
+                if (!birthdayDatePickerDialog.isShowing()) {
+                    birthdayDatePickerDialog.show();
+                }
             }
         });
     }
 
-    private void checkEmailField() {
+    // TODO onBackPressed
+
+    private boolean checkEmailField() {
         String s = getEmailField();
         if (s.equals("")) {
             this.emailTextInputLayout.setErrorEnabled(true);
-            this.emailTextInputLayout.setError(getText(R.string.login_emailEditTextErrorBlank));
-            this.emailFieldAcceptable = false;
+            this.emailTextInputLayout.setError(getText(R.string.activity_login_emailEditTextErrorBlank));
+            return false;
         } else if (!Patterns.EMAIL_ADDRESS.matcher(s).matches()) {
             this.emailTextInputLayout.setErrorEnabled(true);
-            this.emailTextInputLayout.setError(getText(R.string.login_emailEditTextErrorPattern));
-            this.emailFieldAcceptable = false;
+            this.emailTextInputLayout.setError(getText(R.string.activity_login_emailEditTextErrorPattern));
+            return false;
         } else {
-            this.emailFieldAcceptable = true;
+            return true;
         }
     }
 
-    private void checkBirthdayField() {
+    private boolean checkBirthdayField() {
         String s = getBirthdayField();
         if (s.equals("")) {
             this.birthdayTextInputLayout.setErrorEnabled(true);
-            this.birthdayTextInputLayout.setError(getText(R.string.login_birthdayEditTextBlank));
-            this.birthdayFieldAcceptable = false;
+            this.birthdayTextInputLayout.setError(getText(R.string.activity_login_birthdayEditTextBlank));
+            return false;
         } else {
-            this.birthdayFieldAcceptable = true;
-        }
-    }
-
-    private void checkAllField() {
-        checkEmailField();
-        checkBirthdayField();
-    }
-
-    private void showBirthdayDatePickerDialog() {
-        if (!this.birthdayDatePickerDialog.isShowing()) {
-            this.birthdayDatePickerDialog.show();
+            return true;
         }
     }
 
@@ -161,34 +125,25 @@ public class LoginActivity extends AppCompatActivity {
         return this.birthdayEditText.getText().toString().trim();
     }
 
-    private boolean isAllFieldAcceptable() {
-        return this.emailFieldAcceptable && this.birthdayFieldAcceptable;
-    }
-
-    private void doLogin() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH);
-        String simpleBirthdayDate = dateFormat.format(this.birthdayCalendar.getTime());
-
-        boolean canLogin = PklAccountManager.login(LoginActivity.this, getEmailField(), simpleBirthdayDate);
-        if (canLogin) {
-            Toast.makeText(LoginActivity.this, "Log In Success", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(LoginActivity.this, CatalogActivity.class);
-            startActivity(intent);
-            finish();
-        } else {
-            Toast.makeText(LoginActivity.this, "Invalid Email or Birthday", Toast.LENGTH_SHORT).show();
-        }
-    }
-
     public void loginButtonOnClick(View view) {
-        checkAllField();
-        if (isAllFieldAcceptable()) {
-            doLogin();
+        if (checkEmailField() && checkBirthdayField()) {
+            boolean canLogin = PklAccountManager.login(LoginActivity.this, getEmailField(), getBirthdayField());
+            if (!canLogin) {
+                Toast.makeText(LoginActivity.this, R.string.activity_login_loginTextFailed, Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(LoginActivity.this, R.string.activity_login_loginTextSuccess, Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(LoginActivity.this, CatalogActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+            }
         }
     }
 
     public void registerButtonOnClick(View view) {
-        Intent intent = new Intent(this, RegisterActivity.class);
+        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+        finish();
     }
 }
