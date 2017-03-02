@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.cendra.prayogo.pklmobile.R;
-import com.cendra.prayogo.pklmobile.db.ProductDbHelper;
 
 import java.util.List;
 
@@ -31,9 +30,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        ContentValues values = this.productList.get(position);
-        holder.getProductNameTextView().setText((values.getAsString(ProductDbHelper.COLUMN_NAME_NAME)));
-        holder.getSellPriceTextView().setText((values.getAsString(ProductDbHelper.COLUMN_NAME_SELL_PRICE)));
+//        ContentValues values = this.productList.get(position);
+//        holder.getProductNameTextView().setText((values.getAsString(ProductDbHelper.COLUMN_NAME_NAME)));
+//        holder.getSellPriceTextView().setText((values.getAsString(ProductDbHelper.COLUMN_NAME_SELL_PRICE)));
     }
 
     @Override

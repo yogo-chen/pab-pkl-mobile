@@ -1,7 +1,5 @@
 package com.cendra.prayogo.pklmobile;
 
-import android.content.ContentValues;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -9,13 +7,9 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
-
-import com.cendra.prayogo.pklmobile.db.ProductDbHelper;
-import com.cendra.prayogo.pklmobile.service.PklAccountManager;
 
 public class AddProductActivity extends AppCompatActivity {
-    private ContentValues loggedInPkl;
+//    private ContentValues loggedInPkl;
 
     private EditText nameEditText;
     private EditText basePriceEditText;
@@ -33,14 +27,14 @@ public class AddProductActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.loggedInPkl = PklAccountManager.getLoggedIn(AddProductActivity.this);
-
-        if (this.loggedInPkl == null) {
-            Intent intent = new Intent(AddProductActivity.this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-            return;
-        }
+//        this.loggedInPkl = PklAccountManager.getLoggedIn(AddProductActivity.this);
+//
+//        if (this.loggedInPkl == null) {
+//            Intent intent = new Intent(AddProductActivity.this, LoginActivity.class);
+//            startActivity(intent);
+//            finish();
+//            return;
+//        }
 
         setContentView(R.layout.activity_add_product);
 
@@ -199,19 +193,19 @@ public class AddProductActivity extends AppCompatActivity {
     }
 
     private void addProduct() {
-        ProductDbHelper productDbHelper = new ProductDbHelper(AddProductActivity.this);
-        productDbHelper.insertProduct(getNameField(), getBasePriceField(), getSellPriceField(), this.loggedInPkl.getAsString(PklAccountManager.LOGGED_IN_EMAIL));
-        Toast.makeText(AddProductActivity.this, "Product Added", Toast.LENGTH_SHORT).show();
-
-        Intent intent = new Intent(AddProductActivity.this, CatalogActivity.class);
-        startActivity(intent);
-        finish();
+//        ProductDbHelper productDbHelper = new ProductDbHelper(AddProductActivity.this);
+//        productDbHelper.insertProduct(getNameField(), getBasePriceField(), getSellPriceField(), this.loggedInPkl.getAsString(PklAccountManager.LOGGED_IN_EMAIL));
+//        Toast.makeText(AddProductActivity.this, "Product Added", Toast.LENGTH_SHORT).show();
+//
+//        Intent intent = new Intent(AddProductActivity.this, CatalogActivity.class);
+//        startActivity(intent);
+//        finish();
     }
 
     public void addProductButtonOnClick(View view) {
-        checkAllField();
-        if (isAllFieldAcceptable()) {
-            addProduct();
-        }
+//        checkAllField();
+//        if (isAllFieldAcceptable()) {
+//            addProduct();
+//        }
     }
 }

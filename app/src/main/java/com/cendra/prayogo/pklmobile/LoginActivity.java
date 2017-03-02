@@ -1,19 +1,22 @@
 package com.cendra.prayogo.pklmobile;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Patterns;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import com.cendra.prayogo.pklmobile.service.PklAccountManager;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -66,6 +69,11 @@ public class LoginActivity extends AppCompatActivity {
 
                         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH);
                         birthdayEditText.setText(dateFormat.format(birthdayCalendar.getTime()));
+
+                        if (birthdayTextInputLayout.isErrorEnabled()) {
+                            birthdayTextInputLayout.setErrorEnabled(false);
+                            birthdayTextInputLayout.setError(null);
+                        }
                     }
                 },
                 birthdayCalendar.get(Calendar.YEAR),
@@ -75,16 +83,15 @@ public class LoginActivity extends AppCompatActivity {
 
         birthdayDatePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
 
-        this.birthdayEditText.setOnClickListener(new View.OnClickListener() {
+        this.birthdayEditText.setInputType(InputType.TYPE_NULL);
+
+        this.birthdayEditText.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                if (birthdayTextInputLayout.isErrorEnabled()) {
-                    birthdayTextInputLayout.setErrorEnabled(false);
-                    birthdayTextInputLayout.setError(null);
-                }
+            public boolean onTouch(View v, MotionEvent event) {
                 if (!birthdayDatePickerDialog.isShowing()) {
                     birthdayDatePickerDialog.show();
                 }
+                return false;
             }
         });
     }
@@ -96,10 +103,12 @@ public class LoginActivity extends AppCompatActivity {
         if (s.equals("")) {
             this.emailTextInputLayout.setErrorEnabled(true);
             this.emailTextInputLayout.setError(getText(R.string.activity_login_emailEditTextErrorBlank));
+            this.emailEditText.requestFocus();
             return false;
         } else if (!Patterns.EMAIL_ADDRESS.matcher(s).matches()) {
             this.emailTextInputLayout.setErrorEnabled(true);
             this.emailTextInputLayout.setError(getText(R.string.activity_login_emailEditTextErrorPattern));
+            this.emailEditText.requestFocus();
             return false;
         } else {
             return true;
@@ -111,6 +120,7 @@ public class LoginActivity extends AppCompatActivity {
         if (s.equals("")) {
             this.birthdayTextInputLayout.setErrorEnabled(true);
             this.birthdayTextInputLayout.setError(getText(R.string.activity_login_birthdayEditTextBlank));
+            this.birthdayEditText.requestFocus();
             return false;
         } else {
             return true;
@@ -126,18 +136,18 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void loginButtonOnClick(View view) {
-        if (checkEmailField() && checkBirthdayField()) {
-            boolean canLogin = PklAccountManager.login(LoginActivity.this, getEmailField(), getBirthdayField());
-            if (!canLogin) {
-                Toast.makeText(LoginActivity.this, R.string.activity_login_loginTextFailed, Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(LoginActivity.this, R.string.activity_login_loginTextSuccess, Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(LoginActivity.this, CatalogActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                finish();
-            }
-        }
+//        if (checkEmailField() && checkBirthdayField()) {
+//            boolean canLogin = PklAccountManager.login(LoginActivity.this, getEmailField(), getBirthdayField());
+//            if (!canLogin) {
+//                Toast.makeText(LoginActivity.this, R.string.activity_login_loginTextFailed, Toast.LENGTH_LONG).show();
+//            } else {
+//                Toast.makeText(LoginActivity.this, R.string.activity_login_loginTextSuccess, Toast.LENGTH_LONG).show();
+//                Intent intent = new Intent(LoginActivity.this, CatalogActivity.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(intent);
+//                finish();
+//            }
+//        }
     }
 
     public void registerButtonOnClick(View view) {

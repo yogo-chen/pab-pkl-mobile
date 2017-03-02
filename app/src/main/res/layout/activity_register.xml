@@ -16,16 +16,16 @@
         android:paddingTop="@dimen/activity_vertical_margin">
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/register_nameTextInputLayout"
+            android:id="@+id/register_emailTextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/register_nameEditText"
+                android:id="@+id/register_emailEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/activity_register_nameEditTextHint"
-                android:inputType="textCapWords" />
+                android:hint="@string/activity_register_emailEditTextHint"
+                android:inputType="textEmailAddress" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -38,8 +38,21 @@
                 android:id="@+id/register_birthdayEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:focusable="false"
                 android:hint="@string/activity_register_birthdayEditTextHint" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/register_nameTextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp">
+
+            <EditText
+                android:id="@+id/register_nameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/activity_register_nameEditTextHint"
+                android:inputType="textCapWords" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -68,20 +81,6 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/activity_register_phoneEditTextHint"
                 android:inputType="phone" />
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/register_emailTextInputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="16dp">
-
-            <EditText
-                android:id="@+id/register_emailEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/activity_register_emailEditTextHint"
-                android:inputType="textEmailAddress" />
         </android.support.design.widget.TextInputLayout>
 
         <Button
