@@ -22,25 +22,23 @@ public class PklWsdlUtils {
         String soapAction = NAMESPACE + methodName;
         SoapObject request = new SoapObject(NAMESPACE, methodName);
         request.addProperty("user", email);
-        request.addProperty("tgllahir", birthday);
         request.addProperty("nama", name);
         request.addProperty("alamat", address);
         request.addProperty("nohp", phone);
+        request.addProperty("tgllahir", birthday);
         request.addProperty("produkunggulan", featuredProduct);
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.setOutputSoapObject(request);
         HttpTransportSE httpTransport = new HttpTransportSE(URL);
-        String result;
         try {
             httpTransport.call(soapAction, envelope);
-            result = ((SoapObject) envelope.bodyIn).getProperty(0).toString();
+            return ((SoapObject) envelope.bodyIn).getProperty(0).toString();
         } catch (UnknownHostException e) {
-            result = "Could not connect to server";
+            return "CONNECTION_ERROR";
         } catch (IOException e) {
-            result = "Could not connect to server";
+            return "SERVER_ERROR";
         } catch (XmlPullParserException e) {
-            result = "XmlPullParserException";
+            return "PARSE_ERROR";
         }
-        return result;
     }
 }

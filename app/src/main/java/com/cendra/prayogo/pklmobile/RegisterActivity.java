@@ -262,17 +262,38 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void registerButtonOnClick(final View view) {
         if (checkEmailField() && checkBirthdayField() && checkNameField() && checkAddressField() && checkPhoneField()) {
-            AccountManager.register(new AccountManager.Handler() {
+            AccountManager.register(new AccountManager.OnEventListener() {
                 @Override
                 public void onPreTask() {
                     ((Button) view).setEnabled(false);
                 }
 
                 @Override
-                public void onTaskResult(String res) {
-                    Toast.makeText(RegisterActivity.this, res, Toast.LENGTH_LONG).show();
+                public void onResultSuccess() {
+                    Toast.makeText(RegisterActivity.this, "Registered successfully", Toast.LENGTH_SHORT).show();
                     ((Button) view).setEnabled(true);
-//                    onBackPressed();
+                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
+                }
+
+                @Override
+                public void onResultFailed() {
+                    Toast.makeText(RegisterActivity.this, "Failed to register", Toast.LENGTH_SHORT).show();
+                    ((Button) view).setEnabled(true);
+                }
+
+                @Override
+                public void onServerError() {
+                    Toast.makeText(RegisterActivity.this, "Server unavailable", Toast.LENGTH_SHORT).show();
+                    ((Button) view).setEnabled(true);
+                }
+
+                @Override
+                public void onConnectionError() {
+                    Toast.makeText(RegisterActivity.this, "No internet connection", Toast.LENGTH_SHORT).show();
+                    ((Button) view).setEnabled(true);
                 }
             }, getEmailField(), getBirthdayField(), getNameField(), getAddressField(), getPhoneField(), "barang");
         }

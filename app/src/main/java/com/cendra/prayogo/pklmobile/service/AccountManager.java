@@ -10,11 +10,11 @@ public class AccountManager {
     private AccountManager() {
     }
 
-    public static void register(final Handler handler, final String email, final String birthday, final String name, final String address, final String phone, final String featuredProduct) {
+    public static void register(final AccountManager.OnEventListener onEventListener, final String email, final String birthday, final String name, final String address, final String phone, final String featuredProduct) {
         AsyncTask<Void, Void, String> asyncTask = new AsyncTask<Void, Void, String>() {
             @Override
             protected void onPreExecute() {
-                handler.onPreTask();
+                onEventListener.onPreTask();
             }
 
             @Override
@@ -24,15 +24,31 @@ public class AccountManager {
 
             @Override
             protected void onPostExecute(String s) {
-                handler.onTaskResult(s);
+                if (s.equals("SERVER_ERROR")) {
+                    onEventListener.onServerError();
+                } else if (s.equals("CONNECTION_ERROR")) {
+                    onEventListener.onConnectionError();
+                } else if (s.equals("PARSE_ERROR")) {
+                    // ignored since impossible
+                } else if (s.matches("^\\(\\\"sukses\\\"\\,\\\"(.)+\\\"\\,\\\"didaftarkan\\\"\\)$")) {
+                    onEventListener.onResultSuccess();
+                } else {
+                    onEventListener.onResultFailed();
+                }
             }
         };
         asyncTask.execute();
     }
 
-    public interface Handler {
+    public interface OnEventListener {
         public abstract void onPreTask();
 
-        public abstract void onTaskResult(String res);
+        public abstract void onResultSuccess();
+
+        public abstract void onResultFailed();
+
+        public abstract void onServerError();
+
+        public abstract void onConnectionError();
     }
 }
