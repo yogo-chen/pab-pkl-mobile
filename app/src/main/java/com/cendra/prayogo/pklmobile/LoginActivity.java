@@ -1,12 +1,9 @@
 package com.cendra.prayogo.pklmobile;
 
-import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.InputType;
@@ -17,6 +14,8 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.cendra.prayogo.pklmobile.service.AccountManager;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -135,19 +134,43 @@ public class LoginActivity extends AppCompatActivity {
         return this.birthdayEditText.getText().toString().trim();
     }
 
-    public void loginButtonOnClick(View view) {
-//        if (checkEmailField() && checkBirthdayField()) {
-//            boolean canLogin = PklAccountManager.login(LoginActivity.this, getEmailField(), getBirthdayField());
-//            if (!canLogin) {
-//                Toast.makeText(LoginActivity.this, R.string.activity_login_loginTextFailed, Toast.LENGTH_LONG).show();
-//            } else {
-//                Toast.makeText(LoginActivity.this, R.string.activity_login_loginTextSuccess, Toast.LENGTH_LONG).show();
-//                Intent intent = new Intent(LoginActivity.this, CatalogActivity.class);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                startActivity(intent);
-//                finish();
-//            }
-//        }
+    public void loginButtonOnClick(final View view) {
+        if (checkEmailField() && checkBirthdayField()) {
+            AccountManager.login(LoginActivity.this, new AccountManager.OnEventListener() {
+                @Override
+                public void onPreTask() {
+                    view.setEnabled(false);
+                }
+
+                @Override
+                public void onResultSuccess() {
+                    Toast.makeText(LoginActivity.this, "Logged in successfully", Toast.LENGTH_SHORT).show();
+                    view.setEnabled(true);
+                    Intent intent = new Intent(LoginActivity.this, CatalogActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
+                }
+
+                @Override
+                public void onResultFailed() {
+                    Toast.makeText(LoginActivity.this, "Invalid email or birthday", Toast.LENGTH_SHORT).show();
+                    view.setEnabled(true);
+                }
+
+                @Override
+                public void onServerError() {
+                    Toast.makeText(LoginActivity.this, "Server is unavailable", Toast.LENGTH_SHORT).show();
+                    view.setEnabled(true);
+                }
+
+                @Override
+                public void onConnectionError() {
+                    Toast.makeText(LoginActivity.this, "Cannot connect to server", Toast.LENGTH_SHORT).show();
+                    view.setEnabled(true);
+                }
+            }, getEmailField(), getBirthdayField());
+        }
     }
 
     public void registerButtonOnClick(View view) {

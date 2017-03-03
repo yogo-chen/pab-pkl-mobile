@@ -9,15 +9,11 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
-/**
- * Created by Admin on 3/2/2017.
- */
-
-public class PklWsdlUtils {
+class PklWsdlUtils {
     private static final String NAMESPACE = "http://schemas.xmlsoap.org/wsdl/";
     private static final String URL = "http://webtest.unpar.ac.id/pklws/pkl.php?wsdl";
 
-    public static String registerPkl(String email, String birthday, String name, String address, String phone, String featuredProduct) {
+    static String registerPkl(String email, String birthday, String name, String address, String phone, String featuredProduct) {
         String methodName = "regpkl";
         String soapAction = NAMESPACE + methodName;
         SoapObject request = new SoapObject(NAMESPACE, methodName);
@@ -42,7 +38,7 @@ public class PklWsdlUtils {
         }
     }
 
-    public static String getPkl(String sid) {
+    static String getPkl(String sid) {
         String methodName = "getpkl";
         String soapAction = NAMESPACE + methodName;
         SoapObject request = new SoapObject(NAMESPACE, methodName);
@@ -62,7 +58,7 @@ public class PklWsdlUtils {
         }
     }
 
-    public static String login(String email, String birthday) {
+    static String login(String email, String birthday) {
         String methodName = "login";
         String soapAction = NAMESPACE + methodName;
         SoapObject request = new SoapObject(NAMESPACE, methodName);
@@ -83,7 +79,7 @@ public class PklWsdlUtils {
         }
     }
 
-    public static String logout(String sid) {
+    static String logout(String sid) {
         String methodName = "logout";
         String soapAction = NAMESPACE + methodName;
         SoapObject request = new SoapObject(NAMESPACE, methodName);

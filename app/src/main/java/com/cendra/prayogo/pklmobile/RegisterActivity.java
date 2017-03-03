@@ -11,11 +11,11 @@ import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.cendra.prayogo.pklmobile.model.User;
 import com.cendra.prayogo.pklmobile.service.AccountManager;
 
 import java.text.SimpleDateFormat;
@@ -262,16 +262,17 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void registerButtonOnClick(final View view) {
         if (checkEmailField() && checkBirthdayField() && checkNameField() && checkAddressField() && checkPhoneField()) {
+            User user = new User(getEmailField(), getBirthdayField(), getNameField(), getAddressField(), getPhoneField(), "barang");
             AccountManager.register(new AccountManager.OnEventListener() {
                 @Override
                 public void onPreTask() {
-                    ((Button) view).setEnabled(false);
+                    view.setEnabled(false);
                 }
 
                 @Override
                 public void onResultSuccess() {
                     Toast.makeText(RegisterActivity.this, "Registered successfully", Toast.LENGTH_SHORT).show();
-                    ((Button) view).setEnabled(true);
+                    view.setEnabled(true);
                     Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
@@ -280,22 +281,22 @@ public class RegisterActivity extends AppCompatActivity {
 
                 @Override
                 public void onResultFailed() {
-                    Toast.makeText(RegisterActivity.this, "Failed to register", Toast.LENGTH_SHORT).show();
-                    ((Button) view).setEnabled(true);
+                    Toast.makeText(RegisterActivity.this, "Register failed", Toast.LENGTH_SHORT).show();
+                    view.setEnabled(true);
                 }
 
                 @Override
                 public void onServerError() {
-                    Toast.makeText(RegisterActivity.this, "Server unavailable", Toast.LENGTH_SHORT).show();
-                    ((Button) view).setEnabled(true);
+                    Toast.makeText(RegisterActivity.this, "Server is unavailable", Toast.LENGTH_SHORT).show();
+                    view.setEnabled(true);
                 }
 
                 @Override
                 public void onConnectionError() {
-                    Toast.makeText(RegisterActivity.this, "No internet connection", Toast.LENGTH_SHORT).show();
-                    ((Button) view).setEnabled(true);
+                    Toast.makeText(RegisterActivity.this, "Cannot connect to server", Toast.LENGTH_SHORT).show();
+                    view.setEnabled(true);
                 }
-            }, getEmailField(), getBirthdayField(), getNameField(), getAddressField(), getPhoneField(), "barang");
+            }, user);
         }
     }
 }
