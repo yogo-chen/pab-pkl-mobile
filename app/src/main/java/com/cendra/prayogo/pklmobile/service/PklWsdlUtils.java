@@ -41,4 +41,65 @@ public class PklWsdlUtils {
             return "PARSE_ERROR";
         }
     }
+
+    public static String getPkl(String sid) {
+        String methodName = "getpkl";
+        String soapAction = NAMESPACE + methodName;
+        SoapObject request = new SoapObject(NAMESPACE, methodName);
+        request.addProperty("sid", sid);
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+        envelope.setOutputSoapObject(request);
+        HttpTransportSE httpTransport = new HttpTransportSE(URL);
+        try {
+            httpTransport.call(soapAction, envelope);
+            return ((SoapObject) envelope.bodyIn).getProperty(0).toString();
+        } catch (UnknownHostException e) {
+            return "CONNECTION_ERROR";
+        } catch (IOException e) {
+            return "SERVER_ERROR";
+        } catch (XmlPullParserException e) {
+            return "PARSE_ERROR";
+        }
+    }
+
+    public static String login(String email, String birthday) {
+        String methodName = "login";
+        String soapAction = NAMESPACE + methodName;
+        SoapObject request = new SoapObject(NAMESPACE, methodName);
+        request.addProperty("user", email);
+        request.addProperty("password", birthday);
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+        envelope.setOutputSoapObject(request);
+        HttpTransportSE httpTransport = new HttpTransportSE(URL);
+        try {
+            httpTransport.call(soapAction, envelope);
+            return ((SoapObject) envelope.bodyIn).getProperty(0).toString();
+        } catch (UnknownHostException e) {
+            return "CONNECTION_ERROR";
+        } catch (IOException e) {
+            return "SERVER_ERROR";
+        } catch (XmlPullParserException e) {
+            return "PARSE_ERROR";
+        }
+    }
+
+    public static String logout(String sid) {
+        String methodName = "logout";
+        String soapAction = NAMESPACE + methodName;
+        SoapObject request = new SoapObject(NAMESPACE, methodName);
+        request.addProperty("sid", sid);
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+        envelope.setOutputSoapObject(request);
+        HttpTransportSE httpTransport = new HttpTransportSE(URL);
+        try {
+            httpTransport.call(soapAction, envelope);
+            return ((SoapObject) envelope.bodyIn).getProperty(0).toString();
+        } catch (UnknownHostException e) {
+            return "CONNECTION_ERROR";
+        } catch (IOException e) {
+            return "SERVER_ERROR";
+        } catch (XmlPullParserException e) {
+            return "PARSE_ERROR";
+        }
+    }
 }
