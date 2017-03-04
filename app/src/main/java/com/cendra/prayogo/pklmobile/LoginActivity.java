@@ -138,14 +138,8 @@ public class LoginActivity extends AppCompatActivity {
         if (checkEmailField() && checkBirthdayField()) {
             PklServiceHelper.login(LoginActivity.this, new PklServiceHelper.OnEventListener() {
                 @Override
-                public void onPreTask() {
-                    view.setEnabled(false);
-                }
-
-                @Override
-                public void onResultSuccess() {
+                public void onResultSuccess(Object result) {
                     Toast.makeText(LoginActivity.this, "Logged in successfully", Toast.LENGTH_SHORT).show();
-                    view.setEnabled(true);
                     Intent intent = new Intent(LoginActivity.this, CatalogActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
@@ -153,21 +147,21 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onResultFailed() {
-                    Toast.makeText(LoginActivity.this, "Invalid email or birthday", Toast.LENGTH_SHORT).show();
-                    view.setEnabled(true);
-                }
-
-                @Override
-                public void onServerError() {
-                    Toast.makeText(LoginActivity.this, "Server is unavailable", Toast.LENGTH_SHORT).show();
-                    view.setEnabled(true);
-                }
-
-                @Override
-                public void onConnectionError() {
-                    Toast.makeText(LoginActivity.this, "Cannot connect to server", Toast.LENGTH_SHORT).show();
-                    view.setEnabled(true);
+                public void onResultFailed(int statusCode) {
+                    switch (statusCode) {
+                        case PklServiceHelper.ERROR_REQUEST_TIMEOUT: {
+                            Toast.makeText(LoginActivity.this, "Cannot connect to server", Toast.LENGTH_SHORT).show();
+                            break;
+                        }
+                        case PklServiceHelper.ERROR_SERVICE_UNAVAILABLE: {
+                            Toast.makeText(LoginActivity.this, "Server is unavailable", Toast.LENGTH_SHORT).show();
+                            break;
+                        }
+                        case PklServiceHelper.ERROR_UNAUTHORIZED: {
+                            Toast.makeText(LoginActivity.this, "Invalid email or birthday", Toast.LENGTH_SHORT).show();
+                            break;
+                        }
+                    }
                 }
             }, getEmailField(), getBirthdayField());
         }

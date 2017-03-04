@@ -5,10 +5,10 @@ package com.cendra.prayogo.pklmobile.model;
  */
 
 public class Transaction {
-    final String name;
-    final int soldPrice;
-    final int quantity;
-    final String date;
+    public final String name;
+    public final int soldPrice;
+    public final int quantity;
+    public final String date;
 
     public Transaction(String name, int soldPrice, int quantity, String date) {
         this.name = name;

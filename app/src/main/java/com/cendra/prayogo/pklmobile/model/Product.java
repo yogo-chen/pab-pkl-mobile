@@ -5,9 +5,9 @@ package com.cendra.prayogo.pklmobile.model;
  */
 
 public class Product {
-    final String name;
-    final int basePrice;
-    final int sellPrice;
+    public final String name;
+    public final int basePrice;
+    public final int sellPrice;
 
     public Product(String name, int basePrice, int sellPrice) {
         this.name = name;

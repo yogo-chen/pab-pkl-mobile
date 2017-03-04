@@ -265,14 +265,8 @@ public class RegisterActivity extends AppCompatActivity {
             User user = new User(getEmailField(), getBirthdayField(), getNameField(), getAddressField(), getPhoneField(), "barang");
             PklServiceHelper.register(new PklServiceHelper.OnEventListener() {
                 @Override
-                public void onPreTask() {
-                    view.setEnabled(false);
-                }
-
-                @Override
-                public void onResultSuccess() {
+                public void onResultSuccess(Object result) {
                     Toast.makeText(RegisterActivity.this, "Registered successfully", Toast.LENGTH_SHORT).show();
-                    view.setEnabled(true);
                     Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
@@ -280,21 +274,17 @@ public class RegisterActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onResultFailed() {
-                    Toast.makeText(RegisterActivity.this, "Register failed", Toast.LENGTH_SHORT).show();
-                    view.setEnabled(true);
-                }
-
-                @Override
-                public void onServerError() {
-                    Toast.makeText(RegisterActivity.this, "Server is unavailable", Toast.LENGTH_SHORT).show();
-                    view.setEnabled(true);
-                }
-
-                @Override
-                public void onConnectionError() {
-                    Toast.makeText(RegisterActivity.this, "Cannot connect to server", Toast.LENGTH_SHORT).show();
-                    view.setEnabled(true);
+                public void onResultFailed(int statusCode) {
+                    switch (statusCode) {
+                        case PklServiceHelper.ERROR_REQUEST_TIMEOUT: {
+                            Toast.makeText(RegisterActivity.this, "Cannot connect to server", Toast.LENGTH_SHORT).show();
+                            break;
+                        }
+                        case PklServiceHelper.ERROR_SERVICE_UNAVAILABLE: {
+                            Toast.makeText(RegisterActivity.this, "Server is unavailable", Toast.LENGTH_SHORT).show();
+                            break;
+                        }
+                    }
                 }
             }, user);
         }
