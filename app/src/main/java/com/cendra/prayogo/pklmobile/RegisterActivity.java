@@ -16,7 +16,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.cendra.prayogo.pklmobile.model.User;
-import com.cendra.prayogo.pklmobile.service.AccountManager;
+import com.cendra.prayogo.pklmobile.service.PklServiceHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -263,7 +263,7 @@ public class RegisterActivity extends AppCompatActivity {
     public void registerButtonOnClick(final View view) {
         if (checkEmailField() && checkBirthdayField() && checkNameField() && checkAddressField() && checkPhoneField()) {
             User user = new User(getEmailField(), getBirthdayField(), getNameField(), getAddressField(), getPhoneField(), "barang");
-            AccountManager.register(new AccountManager.OnEventListener() {
+            PklServiceHelper.register(new PklServiceHelper.OnEventListener() {
                 @Override
                 public void onPreTask() {
                     view.setEnabled(false);

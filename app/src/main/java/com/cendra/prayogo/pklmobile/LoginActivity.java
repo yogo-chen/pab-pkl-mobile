@@ -15,7 +15,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.cendra.prayogo.pklmobile.service.AccountManager;
+import com.cendra.prayogo.pklmobile.service.PklServiceHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -136,7 +136,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void loginButtonOnClick(final View view) {
         if (checkEmailField() && checkBirthdayField()) {
-            AccountManager.login(LoginActivity.this, new AccountManager.OnEventListener() {
+            PklServiceHelper.login(LoginActivity.this, new PklServiceHelper.OnEventListener() {
                 @Override
                 public void onPreTask() {
                     view.setEnabled(false);

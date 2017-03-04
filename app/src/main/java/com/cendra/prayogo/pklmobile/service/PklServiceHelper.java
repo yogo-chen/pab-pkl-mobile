@@ -9,7 +9,7 @@ import com.cendra.prayogo.pklmobile.model.User;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class AccountManager {
+public class PklServiceHelper {
     private static final String PREF_NAME = "PKL_ACCOUNT";
     private static final String SID = "SID";
     private static final String EMAIL = "EMAIL";
@@ -21,10 +21,10 @@ public class AccountManager {
 
     private static User loggedInUser;
 
-    private AccountManager() {
+    private PklServiceHelper() {
     }
 
-    public static void register(final AccountManager.OnEventListener onEventListener, final User user) {
+    public static void register(final PklServiceHelper.OnEventListener onEventListener, final User user) {
         AsyncTask<Void, Void, String> asyncTask = new AsyncTask<Void, Void, String>() {
             @Override
             protected void onPreExecute() {
@@ -54,7 +54,7 @@ public class AccountManager {
         asyncTask.execute();
     }
 
-    public static void login(final Context context, final AccountManager.OnEventListener onEventListener, final String email, final String birthday) {
+    public static void login(final Context context, final PklServiceHelper.OnEventListener onEventListener, final String email, final String birthday) {
         AsyncTask<Void, Void, String> asyncTaskLogin = new AsyncTask<Void, Void, String>() {
             @Override
             protected void onPreExecute() {
