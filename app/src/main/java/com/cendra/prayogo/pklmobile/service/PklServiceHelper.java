@@ -44,12 +44,11 @@ public class PklServiceHelper {
                 } else if (s.equals(PklWsdlUtils.CONNECTION_ERROR)) {
                     onEventListener.onResultFailed(ERROR_REQUEST_TIMEOUT);
                 } else if (s.equals(PklWsdlUtils.PARSE_ERROR)) {
-                    // ignored since impossible
+                    throw new RuntimeException("Unreachable statement, s: \"" + s + "\"");
                 } else if (s.equals("(\"sukses\",\"" + user.email + "\",\"didaftarkan\")")) {
                     onEventListener.onResultSuccess(null);
                 } else {
-                    // should be unreachable
-                    onEventListener.onResultFailed(0);
+                    throw new RuntimeException("Unreachable statement, s: \"" + s + "\"");
                 }
             }
         };
@@ -71,7 +70,7 @@ public class PklServiceHelper {
                 } else if (loginResultString.equals(PklWsdlUtils.CONNECTION_ERROR)) {
                     onEventListener.onResultFailed(ERROR_REQUEST_TIMEOUT);
                 } else if (loginResultString.equals(PklWsdlUtils.PARSE_ERROR)) {
-                    // ignored since impossible
+                    throw new RuntimeException("Unreachable statement, s: \"" + loginResultString + "\"");
                 } else {
                     Pattern p = Pattern.compile("^\\(\"OK\",\"(.+)\"\\)$");
                     Matcher m = p.matcher(loginResultString);
@@ -95,7 +94,7 @@ public class PklServiceHelper {
                                 } else if (getPklResultString.equals(PklWsdlUtils.CONNECTION_ERROR)) {
                                     onEventListener.onResultFailed(ERROR_REQUEST_TIMEOUT);
                                 } else if (getPklResultString.equals(PklWsdlUtils.PARSE_ERROR)) {
-                                    // ignored since impossible
+                                    throw new RuntimeException("Unreachable statement, s: \"" + getPklResultString + "\"");
                                 } else {
                                     Pattern p = Pattern.compile("^\\(\"(.+)\",\"(.+)\",\"(.+)\",\"(.+)\",\"(.+)\",\"(.+)\"\\)$");
                                     Matcher m = p.matcher(getPklResultString);
@@ -179,14 +178,13 @@ public class PklServiceHelper {
                 } else if (s.equals(PklWsdlUtils.CONNECTION_ERROR)) {
                     onEventListener.onResultFailed(ERROR_REQUEST_TIMEOUT);
                 } else if (s.equals(PklWsdlUtils.PARSE_ERROR)) {
-                    // ignored since impossible
+                    throw new RuntimeException("Unreachable statement, s: \"" + s + "\"");
                 } else if (s.equals("(\"sid=" + sid + "\",\"tidak ditemukan\")")) {
                     onEventListener.onResultFailed(ERROR_UNAUTHORIZED);
                 } else if (s.equals("(\"" + product.name + "\",\"diregistrasi\")")) {
                     onEventListener.onResultSuccess(null);
                 } else {
-                    // unreachable
-                    onEventListener.onResultFailed(0);
+                    throw new RuntimeException("Unreachable statement, s: \"" + s + "\"");
                 }
             }
         };
@@ -211,7 +209,7 @@ public class PklServiceHelper {
                 } else if (s.equals(PklWsdlUtils.CONNECTION_ERROR)) {
                     onEventListener.onResultFailed(ERROR_REQUEST_TIMEOUT);
                 } else if (s.equals(PklWsdlUtils.PARSE_ERROR)) {
-                    // ignored since impossible
+                    throw new RuntimeException("Unreachable statement, s: \"" + s + "\"");
                 } else if (s.equals("(\"namaproduk=" + name + "\",\"tidak ditemukan\")")) {
                     onEventListener.onResultFailed(ERROR_NOT_FOUND);
                 } else if (s.equals("(\"sid=" + sid + "\",\"tidak ditemukan\")")) {
@@ -228,8 +226,7 @@ public class PklServiceHelper {
 
                         onEventListener.onResultSuccess(product);
                     } else {
-                        // unreachable
-                        onEventListener.onResultFailed(0);
+                        throw new RuntimeException("Unreachable statement, s: \"" + s + "\"");
                     }
                 }
             }
@@ -255,7 +252,7 @@ public class PklServiceHelper {
                 } else if (s.equals(PklWsdlUtils.CONNECTION_ERROR)) {
                     onEventListener.onResultFailed(ERROR_REQUEST_TIMEOUT);
                 } else if (s.equals(PklWsdlUtils.PARSE_ERROR)) {
-                    // ignored since impossible
+                    throw new RuntimeException("Unreachable statement, s: \"" + s + "\"");
                 } else if (s.equals("(\"namaproduk=" + name + "\",\"tidak ditemukan\")")) {
                     onEventListener.onResultFailed(ERROR_NOT_FOUND);
                 } else if (s.equals("(\"sid=" + sid + "\",\"tidak ditemukan\")")) {
@@ -263,8 +260,7 @@ public class PklServiceHelper {
                 } else if (s.equals("(\"" + name + "\",\"dihapus\")")) {
                     onEventListener.onResultSuccess(null);
                 } else {
-                    // unreachable
-                    onEventListener.onResultFailed(0);
+                    throw new RuntimeException("Unreachable statement, s: \"" + s + "\"");
                 }
             }
         };
@@ -289,7 +285,7 @@ public class PklServiceHelper {
                 } else if (s.equals(PklWsdlUtils.CONNECTION_ERROR)) {
                     onEventListener.onResultFailed(ERROR_REQUEST_TIMEOUT);
                 } else if (s.equals(PklWsdlUtils.PARSE_ERROR)) {
-                    // ignored since impossible
+                    throw new RuntimeException("Unreachable statement, s: \"" + s + "\"");
                 } else if (s.equals("(\"sid=" + sid + "\",\"tidak ditemukan\")")) {
                     onEventListener.onResultFailed(ERROR_UNAUTHORIZED);
                 } else {
@@ -324,14 +320,13 @@ public class PklServiceHelper {
                 } else if (s.equals(PklWsdlUtils.CONNECTION_ERROR)) {
                     onEventListener.onResultFailed(ERROR_REQUEST_TIMEOUT);
                 } else if (s.equals(PklWsdlUtils.PARSE_ERROR)) {
-                    // ignored since impossible
+                    throw new RuntimeException("Unreachable statement, s: \"" + s + "\"");
                 } else if (s.equals("(\"sid=" + sid + "\",\"tidak ditemukan\")")) {
                     onEventListener.onResultFailed(ERROR_UNAUTHORIZED);
                 } else if (s.equals("(\"Transaksi = " + product.name + "\",\"ditambahkan\")")) {
                     onEventListener.onResultSuccess(null);
                 } else {
-                    // unreachable
-                    onEventListener.onResultFailed(0);
+                    throw new RuntimeException("Unreachable statement, s: \"" + s + "\"");
                 }
             }
         };
@@ -356,27 +351,25 @@ public class PklServiceHelper {
                 } else if (s.equals(PklWsdlUtils.CONNECTION_ERROR)) {
                     onEventListener.onResultFailed(ERROR_REQUEST_TIMEOUT);
                 } else if (s.equals(PklWsdlUtils.PARSE_ERROR)) {
-                    // ignored since impossible
+                    throw new RuntimeException("Unreachable statement, s: \"" + s + "\"");
                 } else if (s.equals("(\"sid=" + sid + "\",\"tidak ditemukan\")")) {
                     onEventListener.onResultFailed(ERROR_UNAUTHORIZED);
+                } else if (s.equals("(\"\")")) {
+                    onEventListener.onResultSuccess(null);
                 } else {
-                    if (s.equals("(\"\")")) {
-                        onEventListener.onResultSuccess(null);
-                    } else {
-                        String[] productStrings = s.substring(1, s.length() - 1).split("\\),\\(");
-                        int transactionLength = productStrings.length;
-                        Transaction[] transactions = new Transaction[transactionLength];
-                        for (int i = 0; i < transactionLength; ++i) {
-                            String[] productProperties = productStrings[i].split(",");
-                            String name = productProperties[0].substring(1, productProperties[0].length() - 1);
-                            int soldPrice = Integer.parseInt(productProperties[1].substring(1, productProperties[1].length() - 1));
-                            int quantity = Integer.parseInt(productProperties[2].substring(1, productProperties[2].length() - 1));
-                            String date = productProperties[3].substring(1, productProperties[3].length() - 1);
+                    String[] productStrings = s.substring(1, s.length() - 1).split("\\),\\(");
+                    int transactionLength = productStrings.length;
+                    Transaction[] transactions = new Transaction[transactionLength];
+                    for (int i = 0; i < transactionLength; ++i) {
+                        String[] productProperties = productStrings[i].split(",");
+                        String name = productProperties[0].substring(1, productProperties[0].length() - 1);
+                        int soldPrice = Integer.parseInt(productProperties[1].substring(1, productProperties[1].length() - 1));
+                        int quantity = Integer.parseInt(productProperties[2].substring(1, productProperties[2].length() - 1));
+                        String date = productProperties[3].substring(1, productProperties[3].length() - 1);
 
-                            transactions[i] = new Transaction(name, soldPrice, quantity, date);
-                        }
-                        onEventListener.onResultSuccess(transactions);
+                        transactions[i] = new Transaction(name, soldPrice, quantity, date);
                     }
+                    onEventListener.onResultSuccess(transactions);
                 }
             }
         };
@@ -398,6 +391,11 @@ public class PklServiceHelper {
             return new User(sid, email, birthday, name, address, phone, featuredProduct);
         }
     }
+
+    public static boolean isLoggedIn(Context context) {
+        return getUser(context) != null;
+    }
+
 
     public interface OnEventListener {
         void onResultSuccess(Object result);
