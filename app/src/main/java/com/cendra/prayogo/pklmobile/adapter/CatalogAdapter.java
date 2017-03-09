@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cendra.prayogo.pklmobile.R;
 
@@ -42,13 +41,7 @@ public class CatalogAdapter extends RecyclerView.Adapter<CatalogAdapter.ViewHold
 
         public ViewHolder(final View itemView) {
             super(itemView);
-            this.productNameTextView = (TextView) itemView.findViewById(R.id.product_card_view_name_edit_text);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(itemView.getContext(), productNameTextView.getText().toString(), Toast.LENGTH_SHORT).show();
-                }
-            });
+            this.productNameTextView = (TextView) itemView.findViewById(R.id.product_card_view_product_name_text_view);
         }
 
         public TextView getProductNameTextView() {

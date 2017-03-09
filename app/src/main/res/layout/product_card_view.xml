@@ -12,6 +12,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginTop="4dp"
         android:foreground="?android:attr/selectableItemBackground"
+        android:onClick="productDetail"
         card_view:cardCornerRadius="2dp"
         card_view:cardElevation="2dp">
 
@@ -25,7 +26,7 @@
             android:paddingTop="8dp">
 
             <TextView
-                android:id="@+id/product_card_view_name_edit_text"
+                android:id="@+id/product_card_view_product_name_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="product_name"

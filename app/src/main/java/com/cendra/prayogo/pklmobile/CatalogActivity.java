@@ -1,5 +1,6 @@
 package com.cendra.prayogo.pklmobile;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,9 +10,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cendra.prayogo.pklmobile.adapter.CatalogAdapter;
+import com.cendra.prayogo.pklmobile.model.Product;
 import com.cendra.prayogo.pklmobile.service.PklServiceHelper;
 
 public class CatalogActivity extends AppCompatActivity {
@@ -90,5 +96,40 @@ public class CatalogActivity extends AppCompatActivity {
 
     public void addProduct(View view) {
         Toast.makeText(CatalogActivity.this, "Add Product", Toast.LENGTH_LONG).show();
+    }
+
+    public void productDetail(View view) {
+        TextView cardViewProductNameTextView = (TextView) view.findViewById(R.id.product_card_view_product_name_text_view);
+        PklServiceHelper.getProduct(CatalogActivity.this, new PklServiceHelper.OnEventListener() {
+            @Override
+            public void onResultSuccess(Object result) {
+                Product product = (Product) result;
+
+                final Dialog productDetailDialog = new Dialog(CatalogActivity.this);
+                productDetailDialog.setContentView(R.layout.dialog_product_detail);
+                TextView dialogProductNameTextView = (TextView) productDetailDialog.findViewById(R.id.dialog_product_detail_product_name);
+                EditText dialogBasePriceEditText = (EditText) productDetailDialog.findViewById(R.id.dialog_product_detail_base_price);
+                EditText dialogSellPriceEditText = (EditText) productDetailDialog.findViewById(R.id.dialog_product_detail_sell_price);
+                Button dialogSaveButton = (Button) productDetailDialog.findViewById(R.id.dialog_product_detail_save_button);
+
+                dialogProductNameTextView.setText(product.name);
+                dialogBasePriceEditText.setText(product.basePrice + "");
+                dialogSellPriceEditText.setText(product.sellPrice + "");
+                dialogSaveButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // TODO onProductSaved
+                        productDetailDialog.dismiss();
+                    }
+                });
+                productDetailDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                productDetailDialog.show();
+            }
+
+            @Override
+            public void onResultFailed(int statusCode) {
+                Toast.makeText(CatalogActivity.this, "Product detail fetch failed with code " + statusCode, Toast.LENGTH_LONG).show();
+            }
+        }, cardViewProductNameTextView.getText().toString());
     }
 }
