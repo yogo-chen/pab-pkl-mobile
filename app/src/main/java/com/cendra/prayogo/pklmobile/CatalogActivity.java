@@ -1,6 +1,5 @@
 package com.cendra.prayogo.pklmobile;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,13 +8,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
+import com.cendra.prayogo.pklmobile.adapter.CatalogAdapter;
+import com.cendra.prayogo.pklmobile.service.PklServiceHelper;
+
 public class CatalogActivity extends AppCompatActivity {
-    private ContentValues loggedInPkl;
-
-//    private ProductDbHelper productDbHelper;
-
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -23,26 +22,32 @@ public class CatalogActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-//        this.loggedInPkl = PklAccountManager.getLoggedIn(CatalogActivity.this);
-//
-//        if (this.loggedInPkl == null) {
-//            Intent intent = new Intent(CatalogActivity.this, LoginActivity.class);
-//            startActivity(intent);
-//            finish();
-//            return;
-//        }
+        if (!PklServiceHelper.isLoggedIn(CatalogActivity.this)) {
+            Intent intent = new Intent(CatalogActivity.this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+            return;
+        }
         setContentView(R.layout.activity_catalog);
 
-//        this.productDbHelper = new ProductDbHelper(CatalogActivity.this);
-
         this.recyclerView = (RecyclerView) findViewById(R.id.catalog_recyclerView);
-
         this.layoutManager = new LinearLayoutManager(CatalogActivity.this);
         this.recyclerView.setLayoutManager(this.layoutManager);
 
-//        this.adapter = new ProductAdapter(this.productDbHelper.getAllProduct(this.loggedInPkl.getAsString(PklAccountManager.LOGGED_IN_EMAIL)));
-        this.recyclerView.setAdapter(this.adapter);
+        PklServiceHelper.getCatalog(CatalogActivity.this, new PklServiceHelper.OnEventListener() {
+            @Override
+            public void onResultSuccess(Object result) {
+                adapter = new CatalogAdapter((String[]) result);
+                recyclerView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onResultFailed(int statusCode) {
+                Toast.makeText(CatalogActivity.this, "Catalog fetch failed with code " + statusCode, Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 
     @Override
@@ -65,7 +70,11 @@ public class CatalogActivity extends AppCompatActivity {
                 return true;
             }
             case R.id.catalog_menu_logout: {
-                logout();
+                PklServiceHelper.logout(CatalogActivity.this);
+                Intent intent = new Intent(CatalogActivity.this, LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
                 return true;
             }
             default: {
@@ -79,11 +88,7 @@ public class CatalogActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void logout() {
-//        PklAccountManager.logout(CatalogActivity.this);
-//        Intent intent = new Intent(CatalogActivity.this, LoginActivity.class);
-//        startActivity(intent);
-//        finish();
+    public void addProduct(View view) {
+        Toast.makeText(CatalogActivity.this, "Add Product", Toast.LENGTH_LONG).show();
     }
-
 }
