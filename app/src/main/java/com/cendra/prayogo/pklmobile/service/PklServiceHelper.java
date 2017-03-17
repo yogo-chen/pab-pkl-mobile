@@ -15,6 +15,7 @@ public class PklServiceHelper {
     public static final int ERROR_UNAUTHORIZED = 401;
     public static final int ERROR_NOT_FOUND = 404;
     public static final int ERROR_REQUEST_TIMEOUT = 408;
+    public static final int ERROR_INTERNAL_SERVER_ERROR = 500;
     public static final int ERROR_SERVICE_UNAVAILABLE = 503;
 
     private static final String PREF_NAME = "PKL_ACCOUNT";
@@ -44,7 +45,7 @@ public class PklServiceHelper {
                 } else if (s.equals(PklWsdlUtils.CONNECTION_ERROR)) {
                     onEventListener.onResultFailed(ERROR_REQUEST_TIMEOUT);
                 } else if (s.equals(PklWsdlUtils.PARSE_ERROR)) {
-                    throw new RuntimeException("Unreachable statement, s: \"" + s + "\"");
+                    onEventListener.onResultFailed(ERROR_INTERNAL_SERVER_ERROR);
                 } else if (s.equals("(\"sukses\",\"" + user.email + "\",\"didaftarkan\")")) {
                     onEventListener.onResultSuccess(null);
                 } else {
@@ -70,7 +71,7 @@ public class PklServiceHelper {
                 } else if (loginResultString.equals(PklWsdlUtils.CONNECTION_ERROR)) {
                     onEventListener.onResultFailed(ERROR_REQUEST_TIMEOUT);
                 } else if (loginResultString.equals(PklWsdlUtils.PARSE_ERROR)) {
-                    throw new RuntimeException("Unreachable statement, s: \"" + loginResultString + "\"");
+                    onEventListener.onResultFailed(ERROR_INTERNAL_SERVER_ERROR);
                 } else {
                     Pattern p = Pattern.compile("^\\(\"OK\",\"(.+)\"\\)$");
                     Matcher m = p.matcher(loginResultString);
@@ -94,7 +95,7 @@ public class PklServiceHelper {
                                 } else if (getPklResultString.equals(PklWsdlUtils.CONNECTION_ERROR)) {
                                     onEventListener.onResultFailed(ERROR_REQUEST_TIMEOUT);
                                 } else if (getPklResultString.equals(PklWsdlUtils.PARSE_ERROR)) {
-                                    throw new RuntimeException("Unreachable statement, s: \"" + getPklResultString + "\"");
+                                    onEventListener.onResultFailed(ERROR_INTERNAL_SERVER_ERROR);
                                 } else {
                                     Pattern p = Pattern.compile("^\\(\"(.+)\",\"(.+)\",\"(.+)\",\"(.+)\",\"(.+)\",\"(.+)\"\\)$");
                                     Matcher m = p.matcher(getPklResultString);
@@ -178,7 +179,7 @@ public class PklServiceHelper {
                 } else if (s.equals(PklWsdlUtils.CONNECTION_ERROR)) {
                     onEventListener.onResultFailed(ERROR_REQUEST_TIMEOUT);
                 } else if (s.equals(PklWsdlUtils.PARSE_ERROR)) {
-                    throw new RuntimeException("Unreachable statement, s: \"" + s + "\"");
+                    onEventListener.onResultFailed(ERROR_INTERNAL_SERVER_ERROR);
                 } else if (s.equals("(\"sid=" + sid + "\",\"tidak ditemukan\")")) {
                     onEventListener.onResultFailed(ERROR_UNAUTHORIZED);
                 } else if (s.equals("(\"" + product.name + "\",\"diregistrasi\")")) {
@@ -209,7 +210,7 @@ public class PklServiceHelper {
                 } else if (s.equals(PklWsdlUtils.CONNECTION_ERROR)) {
                     onEventListener.onResultFailed(ERROR_REQUEST_TIMEOUT);
                 } else if (s.equals(PklWsdlUtils.PARSE_ERROR)) {
-                    throw new RuntimeException("Unreachable statement, s: \"" + s + "\"");
+                    onEventListener.onResultFailed(ERROR_INTERNAL_SERVER_ERROR);
                 } else if (s.equals("(\"namaproduk=" + name + "\",\"tidak ditemukan\")")) {
                     onEventListener.onResultFailed(ERROR_NOT_FOUND);
                 } else if (s.equals("(\"sid=" + sid + "\",\"tidak ditemukan\")")) {
@@ -252,7 +253,7 @@ public class PklServiceHelper {
                 } else if (s.equals(PklWsdlUtils.CONNECTION_ERROR)) {
                     onEventListener.onResultFailed(ERROR_REQUEST_TIMEOUT);
                 } else if (s.equals(PklWsdlUtils.PARSE_ERROR)) {
-                    throw new RuntimeException("Unreachable statement, s: \"" + s + "\"");
+                    onEventListener.onResultFailed(ERROR_INTERNAL_SERVER_ERROR);
                 } else if (s.equals("(\"namaproduk=" + name + "\",\"tidak ditemukan\")")) {
                     onEventListener.onResultFailed(ERROR_NOT_FOUND);
                 } else if (s.equals("(\"sid=" + sid + "\",\"tidak ditemukan\")")) {
@@ -285,7 +286,7 @@ public class PklServiceHelper {
                 } else if (s.equals(PklWsdlUtils.CONNECTION_ERROR)) {
                     onEventListener.onResultFailed(ERROR_REQUEST_TIMEOUT);
                 } else if (s.equals(PklWsdlUtils.PARSE_ERROR)) {
-                    throw new RuntimeException("Unreachable statement, s: \"" + s + "\"");
+                    onEventListener.onResultFailed(ERROR_INTERNAL_SERVER_ERROR);
                 } else if (s.equals("(\"sid=" + sid + "\",\"tidak ditemukan\")")) {
                     onEventListener.onResultFailed(ERROR_UNAUTHORIZED);
                 } else {
@@ -320,7 +321,7 @@ public class PklServiceHelper {
                 } else if (s.equals(PklWsdlUtils.CONNECTION_ERROR)) {
                     onEventListener.onResultFailed(ERROR_REQUEST_TIMEOUT);
                 } else if (s.equals(PklWsdlUtils.PARSE_ERROR)) {
-                    throw new RuntimeException("Unreachable statement, s: \"" + s + "\"");
+                    onEventListener.onResultFailed(ERROR_INTERNAL_SERVER_ERROR);
                 } else if (s.equals("(\"sid=" + sid + "\",\"tidak ditemukan\")")) {
                     onEventListener.onResultFailed(ERROR_UNAUTHORIZED);
                 } else if (s.equals("(\"Transaksi = " + product.name + "\",\"ditambahkan\")")) {
@@ -351,7 +352,7 @@ public class PklServiceHelper {
                 } else if (s.equals(PklWsdlUtils.CONNECTION_ERROR)) {
                     onEventListener.onResultFailed(ERROR_REQUEST_TIMEOUT);
                 } else if (s.equals(PklWsdlUtils.PARSE_ERROR)) {
-                    throw new RuntimeException("Unreachable statement, s: \"" + s + "\"");
+                    onEventListener.onResultFailed(ERROR_INTERNAL_SERVER_ERROR);
                 } else if (s.equals("(\"sid=" + sid + "\",\"tidak ditemukan\")")) {
                     onEventListener.onResultFailed(ERROR_UNAUTHORIZED);
                 } else if (s.equals("(\"\")")) {

@@ -262,6 +262,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void registerButtonOnClick(final View view) {
         if (checkEmailField() && checkBirthdayField() && checkNameField() && checkAddressField() && checkPhoneField()) {
+            view.setEnabled(false);
             User user = new User(getEmailField(), getBirthdayField(), getNameField(), getAddressField(), getPhoneField(), "barang");
             PklServiceHelper.register(new PklServiceHelper.OnEventListener() {
                 @Override
@@ -275,6 +276,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 @Override
                 public void onResultFailed(int statusCode) {
+                    view.setEnabled(true);
                     switch (statusCode) {
                         case PklServiceHelper.ERROR_REQUEST_TIMEOUT: {
                             Toast.makeText(RegisterActivity.this, "Cannot connect to server", Toast.LENGTH_SHORT).show();
@@ -282,6 +284,10 @@ public class RegisterActivity extends AppCompatActivity {
                         }
                         case PklServiceHelper.ERROR_SERVICE_UNAVAILABLE: {
                             Toast.makeText(RegisterActivity.this, "Server is unavailable", Toast.LENGTH_SHORT).show();
+                            break;
+                        }
+                        case PklServiceHelper.ERROR_INTERNAL_SERVER_ERROR: {
+                            Toast.makeText(RegisterActivity.this, "Internal server error", Toast.LENGTH_SHORT).show();
                             break;
                         }
                     }

@@ -136,6 +136,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void loginButtonOnClick(final View view) {
         if (checkEmailField() && checkBirthdayField()) {
+            view.setEnabled(false);
             PklServiceHelper.login(LoginActivity.this, new PklServiceHelper.OnEventListener() {
                 @Override
                 public void onResultSuccess(Object result) {
@@ -148,6 +149,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 @Override
                 public void onResultFailed(int statusCode) {
+                    view.setEnabled(true);
                     switch (statusCode) {
                         case PklServiceHelper.ERROR_REQUEST_TIMEOUT: {
                             Toast.makeText(LoginActivity.this, "Cannot connect to server", Toast.LENGTH_SHORT).show();
@@ -159,6 +161,10 @@ public class LoginActivity extends AppCompatActivity {
                         }
                         case PklServiceHelper.ERROR_UNAUTHORIZED: {
                             Toast.makeText(LoginActivity.this, "Invalid email or birthday", Toast.LENGTH_SHORT).show();
+                            break;
+                        }
+                        case PklServiceHelper.ERROR_INTERNAL_SERVER_ERROR: {
+                            Toast.makeText(LoginActivity.this, "Internal server error", Toast.LENGTH_SHORT).show();
                             break;
                         }
                     }
